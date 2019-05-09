@@ -2,8 +2,12 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
      <Button type="primary" @click="handleLogin()">测试登陆</Button>
-
+     <br/>
+      <br/>
      <Button type="primary" @click="handleCheckToken()">验证Token</Button>
+    <br/>
+     <br/>
+     <Button type="primary" @click="handleDeletePage()">删除页面</Button>
   </div>
 </template>
 
@@ -29,6 +33,19 @@ export default {
     handleCheckToken(){
      this.$store.dispatch('CheckToken').then(res=>{
           alert('验证成功！')
+      }).catch(err=>{
+          alert(err)
+      })
+    },
+    //删除页面
+    handleDeletePage(){
+      let params={
+        id:5,
+        force:true,
+        type:'delete'
+      }
+     this.$store.dispatch('getOperationPageById',params).then(res=>{
+          alert('删除成功！')
       }).catch(err=>{
           alert(err)
       })

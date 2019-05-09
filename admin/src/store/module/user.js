@@ -3,6 +3,7 @@ import {
     logout, 
     getUserInfo,
     tokenValidate,
+    operationPageById,
   } from '@/api/user'
 import { setToken, getToken,setCookie,getCookie} from '@/libs/util'
 //import { GetGuid } from '@/libs/tools'
@@ -124,5 +125,24 @@ export default {
           }
         })
       },
+      // 操作文章
+      getOperationPageById ({ state, commit },params) {
+        debugger
+      return new Promise((resolve, reject) => {
+        try {
+          operationPageById(params).then(res => {
+          debugger
+            const data = res.data
+            resolve(data)
+          }).catch(err => {
+            let resData=err.response.data
+            reject(resData.message)
+          })
+        } catch (error) {
+          console.error(err)
+          reject(serverBusyTips)
+        }
+      })
+    },
     }
   }

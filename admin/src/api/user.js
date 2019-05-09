@@ -65,3 +65,22 @@ export const tokenValidate = (token) => {
     method: 'post'
   })
 }
+
+/**
+* @description 操作文章接口
+*/
+export const operationPageById = ({id,type}) => {
+  //参数
+  const data = {
+    //id
+  }
+  return axios.request({
+    url: `api/wp-json/wp/v2/pages/${id}`,
+    data,
+    method: type,
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return Qs.stringify(data)
+    }],
+  })
+}
