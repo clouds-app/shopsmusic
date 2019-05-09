@@ -2,6 +2,7 @@ import axios from 'axios'
 import defaultSetting from '@/config'
 import store from '@/store'
 // import { Spin } from 'iview'
+import { setToken, getToken,setCookie,getCookie} from '@/libs/util'
 const addErrorLog = errorInfo => {
   const { statusText, status, request: { responseURL } } = errorInfo
   let info = {
@@ -18,11 +19,16 @@ class HttpRequest {
     this.baseUrl = baseUrl
     this.queue = {}
   }
+
+ /**
+ * 需要认证的 Http 请求
+ */
   getInsideConfig () {
     const config = {
       baseURL: this.baseUrl,
       headers: {
-        //
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + getToken()
       }
     }
     return config

@@ -25,16 +25,17 @@ outputDir: 'dist',
   devServer: {
     //port: 9099,
     //proxy:'http://192.168.168.111:8081'  http://shop.szclsoft.com
-    proxy: {
-      '/api': {
-        //target: 'http://192.168.168.111:8081/clerp-shop-admin/api/', //对应自己的接口
-        target: 'http://shop.szclsoft.com/api/', //对应自己的接口
-        changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    }
+    // proxy: {
+    //   '/api': {
+    //     //http://ftp4interview.gotoip4.com/api/wp-json/jwt-auth/v1/token
+    //     //target: 'http://192.168.168.111:8081/clerp-shop-admin/api/', //对应自己的接口
+    //     target: 'http://ftp4interview.gotoip4.com/', //对应自己的接口
+    //     changeOrigin: true,
+    //     ws: true,
+    //     pathRewrite: {
+    //       '^/api': ''
+    //     }
+    //   }
+    // }
   }
 }
