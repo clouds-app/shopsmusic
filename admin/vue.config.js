@@ -22,20 +22,17 @@ productionSourceMap: false,
 outputDir: 'dist',
 // 放置静态资源的地方 (js/css/img/font/...)
  assetsDir: 'static',
-  devServer: {
-    //port: 9099,
-    //proxy:'http://192.168.168.111:8081'  http://shop.szclsoft.com
-    // proxy: {
-    //   '/api': {
-    //     //http://ftp4interview.gotoip4.com/api/wp-json/jwt-auth/v1/token
-    //     //target: 'http://192.168.168.111:8081/clerp-shop-admin/api/', //对应自己的接口
-    //     target: 'http://ftp4interview.gotoip4.com/', //对应自己的接口
-    //     changeOrigin: true,
-    //     ws: true,
-    //     pathRewrite: {
-    //       '^/api': ''
-    //     }
-    //   }
-    // }
-  }
+  // devServer: {
+  //   port: 9099,
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://shopsmusic.cn/', //对应自己的接口
+  //       changeOrigin: false,
+  //       ws: true,
+  //       pathRewrite: {
+  //         '^/api': ''
+  //       }
+  //     }
+  //   }
+  // }
 }

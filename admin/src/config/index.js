@@ -11,7 +11,7 @@ export default {
      * @description api请求基础路径 
      */
     baseUrl: {
-      dev: 'http://ftp4interview.gotoip4.com/',
+      dev: 'http://shopsmusic.cn/',//http://ftp4interview.gotoip4.com/
       pro: ''
     },
 

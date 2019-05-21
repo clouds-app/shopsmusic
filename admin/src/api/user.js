@@ -57,12 +57,18 @@ export const getUserInfo = (token) => {
 * @description 验证token 是否正确 
 */
 export const tokenValidate = (token) => {
+   //参数
+   const data = {
+    token
+  }
   return axios.request({
     url: 'api/wp-json/jwt-auth/v1/token/validate',
-    params: {
-      token
-    },
-    method: 'post'
+    data,
+    method: 'post',
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return Qs.stringify(data)
+    }],
   })
 }
 

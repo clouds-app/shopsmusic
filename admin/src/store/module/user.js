@@ -44,29 +44,45 @@ export default {
       // 用户登录
       handleLogin ({ commit }, {username, password}) {
         // username = username.trim()
+        //debugger
         return new Promise((resolve, reject) => {
-          login({
-            username,
-            password
-          }).then(res => {
-              debugger
-              console.warn(res)
-             const data = res.data
-            if(res.status==200)
-            {
-              commit('setToken', data.token)
-              resolve()
-            }
-            else
-            {
-              reject(data.message)
+          try{
+            //debugger
+            login({
+              username,
+              password
+            }).then(res => {
+               
+               // console.warn(res)
+               const data = res.data
+              if(res.status==200)
+              {
+                commit('setToken', data.token)
+                resolve()
+              }
+              else
+              {
+                reject(data.message)
+               
+              }
              
-            }
-           
-          }).catch(err => {
+            }).catch(err => {
+              console.error(err)
+              if(err.response.data.data.status==403)
+              {
+                reject(err.response.data.data.status)
+              }else{
+                reject(serverBusyTips)
+              }
+            
+            })
+          }
+          catch(err)
+          {
+            
             console.error(err)
-            reject(serverBusyTips)
-          })
+          }
+       
         })
       },
       // 退出登录
@@ -109,11 +125,11 @@ export default {
       },
       // 获取用户相关信息
       CheckToken ({ state, commit }) {
-          debugger
+          //debugger
         return new Promise((resolve, reject) => {
           try {
             tokenValidate(state.token).then(res => {
-            debugger
+            //debugger
               const data = res.data
               resolve(data)
             }).catch(err => {
@@ -127,11 +143,11 @@ export default {
       },
       // 操作文章
       getOperationPageById ({ state, commit },params) {
-        debugger
+        //debugger
       return new Promise((resolve, reject) => {
         try {
           operationPageById(params).then(res => {
-          debugger
+          //debugger
             const data = res.data
             resolve(data)
           }).catch(err => {

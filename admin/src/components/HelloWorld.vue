@@ -1,13 +1,12 @@
 <template>
-  <div class="hello">
+  <div class="hello" style="margin-bottom:5px">
     <h1>{{ msg }}</h1>
      <Button type="primary" @click="handleLogin()">测试登陆</Button>
-     <br/>
-      <br/>
+  <span style="margin-left:5px"></span>
      <Button type="primary" @click="handleCheckToken()">验证Token</Button>
-    <br/>
-     <br/>
+     <span style="margin-left:5px"></span>
      <Button type="primary" @click="handleDeletePage()">删除页面</Button>
+   
   </div>
 </template>
 
@@ -21,20 +20,20 @@ export default {
     handleLogin(){
       let params={
         username:'test',
-        password:'000123'
+        password:'z^3Jv#AN6aQp8&&jP5XY&OkW'
       }
       this.$store.dispatch('handleLogin',params).then(res=>{
           alert('登陆成功！')
       }).catch(err=>{
-          alert(err)
+          alert('用户名或密码错误 代号：'+err)
       })
     },
     //用于验证 Token 是否正确
     handleCheckToken(){
      this.$store.dispatch('CheckToken').then(res=>{
-          alert('验证成功！')
+          alert('当前Token有效！')
       }).catch(err=>{
-          alert(err)
+          alert('请重新登陆 代号：'+err)
       })
     },
     //删除页面
