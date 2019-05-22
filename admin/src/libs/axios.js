@@ -28,7 +28,7 @@ class HttpRequest {
       baseURL: this.baseUrl,
       headers: {
         'content-type': 'application/json',
-        'Authorization': AuthorizationCheck()
+        'Authorization': AuthorizationCheck() //'Bearer ' + getToken()//
       }
     }
     return config

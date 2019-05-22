@@ -18,7 +18,7 @@ import { mapActions, mapGetters } from "vuex";
 import * as type from "@/enums";
 import base_mixins from "@/views/mixins";
 export default {
-  name: "pageList",
+  name: "postList",
   mixins: [base_mixins],
   data() {
     return {
@@ -69,7 +69,7 @@ export default {
       
   },
   methods: {
-    ...mapActions(["getPageList"]), //导出getPageList方法，并合并到当前methods中
+    ...mapActions(["getPostsList"]), //导出getPageList方法，并合并到当前methods中
     //初始化页面列表数据
     initData() {
       this.spinShow = true;
@@ -80,11 +80,11 @@ export default {
         //  slug,
         //  status
       };
-      this.getPageList(params)
+      this.getPostsList(params)
         .then(res => {
           let config = {
             type: type.tipMessage_success,
-            msg: "获取列表成功！"
+            msg: "获取文章列表成功！"
           };
          // console.log('this.allPageList:'+JSON.stringify(res))
            this.formatData(res)
@@ -95,7 +95,7 @@ export default {
           this.spinShow = false;
           let config = {
             type: type.tipMessage_error,
-            msg: "获取列表失败！ 代号：" + err
+            msg: "获取文章列表失败！ 代号：" + err
           };
           _self.showMsg(config);
         });
@@ -131,7 +131,7 @@ export default {
      this.spinShow = true;
       let params={
         id:row.id,
-        force:true,
+        force:false,
         type:'delete'
       }
      this.$store.dispatch('getOperationPageById',params).then(res=>{

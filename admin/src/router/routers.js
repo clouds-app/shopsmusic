@@ -22,10 +22,15 @@ export default [
     },
     children:[ 
       {
-      path:'pageList',
+      path:'pageList', //嵌套路径path不需要’/‘
       name:'pageList',
       component:()=>import(/* webpackChunkName: "pageList" */ '@/views/page/pageList.vue')
       },
+      {
+        path:'postsList',//嵌套路径path不需要’/‘
+        name:'postsList',
+        component:()=>import(/* webpackChunkName: "pageList" */ '@/views/posts/postList.vue')
+        },
     ]
   },
  

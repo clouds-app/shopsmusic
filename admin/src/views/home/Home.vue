@@ -13,6 +13,10 @@
                     </MenuItem>
                     <MenuItem name="1-3" to="/home/pageList">
                       <Icon type="ios-navigate"></Icon>
+                        <span v-show="!isCollapsed">页面列表</span>
+                    </MenuItem>
+                     <MenuItem name="1-4" to="/home/postsList">
+                      <Icon type="ios-navigate"></Icon>
                         <span v-show="!isCollapsed">文章列表</span>
                     </MenuItem>
                 </Menu>

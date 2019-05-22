@@ -26,7 +26,7 @@ export default {
         return {
             form:{
                 userName:'test',
-                password:'J$XGHhXbv@$pJ01J8Dh&rsTA'
+                password:'1234565554546464'
             }
           
         }

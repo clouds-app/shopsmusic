@@ -74,14 +74,16 @@ export const tokenValidate = (token) => {
 
 /**
 * @description 操作文章接口
+* Example Request #Example Request
+* $ curl -X DELETE http://demo.wp-api.org/wp-json/wp/v2/posts/<id>
 */
 export const operationPageById = ({id,type}) => {
   //参数
   const data = {
-    //id
+   // title:'update title'
   }
   return axios.request({
-    url: `api/wp-json/wp/v2/pages/${id}`,
+    url: `api/wp-json/wp/v2/posts/${id}`,
     data,
     method: type,
     transformRequest: [function (data) {
