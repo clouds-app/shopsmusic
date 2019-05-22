@@ -1,10 +1,11 @@
-import { 
-    login, 
-    logout, 
-    getUserInfo,
-    tokenValidate,
-    operationPageById,
-  } from '@/api/user'
+// import { 
+//     login, 
+//     logout, 
+//     getUserInfo,
+//     tokenValidate,
+//     operationPageById,
+//   } from '@/api/user'
+import * as userServices from '@/api/user'
 import { setToken, getToken,setCookie,getCookie} from '@/libs/util'
 //import { GetGuid } from '@/libs/tools'
 const serverBusyTips="网络繁忙，请稍后再试！"
@@ -42,18 +43,10 @@ export default {
     },
     actions: {
       // 用户登录
-      handleLogin ({ commit }, {username, password}) {
-        // username = username.trim()
-        //debugger
+      handleLogin ({ commit }, params) {
         return new Promise((resolve, reject) => {
           try{
-            //debugger
-            login({
-              username,
-              password
-            }).then(res => {
-               
-               // console.warn(res)
+            userServices.login(params).then(res => {
                const data = res.data
               if(res.status==200)
               {
@@ -63,7 +56,6 @@ export default {
               else
               {
                 reject(data.message)
-               
               }
              
             }).catch(err => {
@@ -79,8 +71,8 @@ export default {
           }
           catch(err)
           {
-            
             console.error(err)
+            reject(serverBusyTips)
           }
        
         })
@@ -89,10 +81,8 @@ export default {
       handleLogOut ({ state, commit }) {
         //debugger
         return new Promise((resolve, reject) => {
-          logout().then(() => {
+          userServices.logout().then(() => {
             commit('setToken', '')
-            commit('setUserId','');
-            commit('setUserName','');
             resolve()
           }).catch(err => {
             reject(err)
@@ -106,7 +96,7 @@ export default {
       getUserInfo ({ state, commit }) {
         return new Promise((resolve, reject) => {
           try {
-            getUserInfo(state.token).then(res => {
+            userServices.getUserInfo(state.token).then(res => {
               const data = res.data
               commit('setAvator', data.avator)
               commit('setUserName', data.name)
@@ -128,7 +118,7 @@ export default {
           //debugger
         return new Promise((resolve, reject) => {
           try {
-            tokenValidate(state.token).then(res => {
+            userServices.tokenValidate(state.token).then(res => {
             //debugger
               const data = res.data
               resolve(data)
@@ -146,7 +136,7 @@ export default {
         //debugger
       return new Promise((resolve, reject) => {
         try {
-          operationPageById(params).then(res => {
+          userServices.operationPageById(params).then(res => {
           //debugger
             const data = res.data
             resolve(data)

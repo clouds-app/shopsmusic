@@ -2,7 +2,7 @@ import axios from 'axios'
 import defaultSetting from '@/config'
 import store from '@/store'
 // import { Spin } from 'iview'
-import { setToken, getToken,setCookie,getCookie} from '@/libs/util'
+import { setToken, getToken,setCookie,getCookie,AuthorizationCheck} from '@/libs/util'
 const addErrorLog = errorInfo => {
   const { statusText, status, request: { responseURL } } = errorInfo
   let info = {
@@ -28,7 +28,7 @@ class HttpRequest {
       baseURL: this.baseUrl,
       headers: {
         'content-type': 'application/json',
-        'Authorization': 'Bearer ' + getToken()
+        'Authorization': AuthorizationCheck()
       }
     }
     return config

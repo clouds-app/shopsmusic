@@ -25,6 +25,13 @@ export const getToken = () => {
   else return false
 }
 
+//JWT Authentication for WP-API 控件，不能直接返回false
+export const AuthorizationCheck = () =>{
+  const token = Cookies.get(TOKEN_KEY)
+  if (token) return 'Bearer ' + token
+  else return ''
+}
+
 export const hasChild = (item) => {
   return item.children && item.children.length !== 0
 }

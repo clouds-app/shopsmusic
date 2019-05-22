@@ -1,13 +1,13 @@
 import axios from '@/libs/api.request'
 import Qs from 'qs'//这个库是 axios 里面包含的，不需要再下载了
 
-
 /**
 * @description 用户登录
 * @params { username, password }
 */
 
 export const login = ({ username, password }) => {
+  //debugger
   //参数
   const data = {
     username,
