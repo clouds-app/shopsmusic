@@ -1,13 +1,21 @@
 <template>
   <div class="container">
     <Spin size="large" fix v-if="spinShow"></Spin>
-    <Table border :columns="columns" :data="data">
-      <!-- <template slot-scope="{ row }" slot="name">
-        <strong>{{ row.name }}</strong>
-      </template> -->
+    <Table  border :columns="columns" :data="data">
+       <template slot-scope="{ row }" slot="title">
+        <strong>{{ row.title }}</strong>
+      </template>
+      <template slot-scope="{ row }" slot="status">
+        <span>{{ formatStatus(row.status) }}</span>
+      </template>
       <template slot-scope="{ row, index }" slot="action">
         <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">查看</Button>
+         <Button type="success" size="small" style="margin-right: 5px" @click="edit(row.id)">修改</Button>
         <Button type="error" size="small" @click="remove(index,row)">删除</Button>
+      </template>
+    
+      <template slot="footer">
+        <span>i am footer</span>
       </template>
     </Table>
   </div>
@@ -26,24 +34,39 @@ export default {
       columns: [
         {
           title: "id",
+          width: 80,
+          align: "center",
+          fixed: 'left',
           key: "id"
         },
         {
           title: "标题",
-          key: "title"
+          key: "title",
+          minWidth: 180,
+          slot:"title",
         },
         {
-          title: "类型",
-          key: "slug"
+          title: "状态",
+            width: 100,
+             align: "center",
+          slot:"status",
+          //key: "status"
         },
+        // {
+        //   title: "类型",
+        //   key: "slug"
+        // },
          {
           title: "时间",
-          key: "date"
+           align: "center",
+          key: "date",
+          width: 180,
         },
         {
           title: "操作",
           slot: "action",
-          width: 150,
+          fixed: 'right',
+          width: 200,
           align: "center"
         }
       ],
@@ -110,6 +133,10 @@ export default {
 
         })
     },
+   formatStatus(status)
+        {
+            return type.formatStatus(status)
+        },
     //页面详细
     show(index) {
       this.$Modal.info({
@@ -123,6 +150,16 @@ export default {
     remove(index,row) {
       
       this.handleDeletePage(index,row);
+    },
+    //修改文章
+    edit(id){
+       this.$router.push({
+              path:'/home/postsEdit',
+              query:{
+                id,
+                type:'edit'
+              }
+            })
     },
       //删除页面
     handleDeletePage(index,row){
@@ -156,4 +193,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.ivu-table-footer{
+  text-align: center;
+}
 </style>

@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import  sessionstorage from 'sessionstorage'
 // cookie保存的天数
 import config from '@/config'
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
@@ -7,6 +8,12 @@ export const TOKEN_KEY = 'token'
 
 export const setToken = (token) => {
   Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
+}
+
+export const getToken = () => {
+  const token = Cookies.get(TOKEN_KEY)
+  if (token) return token
+  else return false
 }
 
 export const setCookie = (key,value) => {
@@ -19,11 +26,19 @@ export const getCookie = (key) => {
   else return false
 }
 
-export const getToken = () => {
-  const token = Cookies.get(TOKEN_KEY)
-  if (token) return token
-  else return false
+//Sessionstorage 设置值
+export const setSessionstorage = (key,value) => {
+  sessionstorage.setItem(key, value)
 }
+
+//Sessionstorage 获取值
+export const getSessionstorage = (key) => {
+ const value = sessionstorage.getItem(key);
+ if (value) return value
+ else return false
+}
+
+
 
 //JWT Authentication for WP-API 控件，不能直接返回false
 export const AuthorizationCheck = () =>{

@@ -30,7 +30,12 @@ export default [
         path:'postsList',//嵌套路径path不需要’/‘
         name:'postsList',
         component:()=>import(/* webpackChunkName: "pageList" */ '@/views/posts/postList.vue')
-        },
+      },
+      {
+        path:'postsEdit',//嵌套路径path不需要’/‘
+        name:'postsEdit',
+        component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/posts/addOrEditPost.vue')
+      },
     ]
   },
  

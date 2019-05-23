@@ -84,7 +84,7 @@ export default {
         .then(res => {
           let config = {
             type: type.tipMessage_success,
-            msg: "获取列表成功！"
+            msg: "获取页面列表成功！"
           };
          // console.log('this.allPageList:'+JSON.stringify(res))
            this.formatData(res)
@@ -95,7 +95,7 @@ export default {
           this.spinShow = false;
           let config = {
             type: type.tipMessage_error,
-            msg: "获取列表失败！ 代号：" + err
+            msg: "获取页面列表失败！ 代号：" + err
           };
           _self.showMsg(config);
         });

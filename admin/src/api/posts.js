@@ -22,3 +22,28 @@ export const getOrSetPosts = ({page,per_page,slug,status }) => {
       }],
     })
   }
+
+
+/**
+* @description 添加/修改页面
+* @params {title,content，slug,status } 
+* @update POST /wp/v2/posts/<id>
+* @detail https://developer.wordpress.org/rest-api/reference/posts/#list-posts
+*/
+  export const createOrEditPosts = ({title,content,status }) => {
+    //参数
+    const data = {
+      title,
+      content,
+      status,
+    }
+    return axios.request({
+      url: '/api/wp-json/wp/v2/posts',
+      data,
+      method: 'post',
+      transformRequest: [function (data) {
+        // 对 data 进行任意转换处理
+        return Qs.stringify(data)
+      }],
+    })
+  }

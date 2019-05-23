@@ -2,24 +2,36 @@
    <div class="layout">
         <Layout :style="{minHeight: '100vh'}">
             <Sider ref="side1" class="leftSider" collapsible :collapsed-width="78" v-model="isCollapsed">
-                <Menu active-name="1-1" theme="dark" width="auto" :class="menuitemClasses">
-                    <MenuItem name="1-1" to="/home">
-                        <Icon type="ios-navigate"></Icon>
-                        <span v-show="!isCollapsed">首页</span>
-                    </MenuItem>
-                    <MenuItem name="1-2" to="/login">
-                       <Icon type="ios-navigate" ></Icon>
-                        <span v-show="!isCollapsed">登陆</span>
-                    </MenuItem>
-                    <MenuItem name="1-3" to="/home/pageList">
-                      <Icon type="ios-navigate"></Icon>
-                        <span v-show="!isCollapsed">页面列表</span>
-                    </MenuItem>
-                     <MenuItem name="1-4" to="/home/postsList">
-                      <Icon type="ios-navigate"></Icon>
-                        <span v-show="!isCollapsed">文章列表</span>
-                    </MenuItem>
-                </Menu>
+                  <Menu active-name="1-1" theme="dark" width="auto" :open-names="['1']">
+                        <Submenu name="1">
+                            <template slot="title">
+                                  <Icon type="ios-navigate"></Icon>
+                                <span v-show="!isCollapsed">仪表盘</span>
+                            </template>
+                             <MenuItem to="/home" name="1-1">首页</MenuItem>
+                             <MenuItem to="/login" name="1-2">
+                             <span v-show="!isCollapsed">登陆</span>
+                            </MenuItem>
+                        </Submenu>
+                        <Submenu name="2">
+                            <template slot="title">
+                                <Icon type="ios-keypad"></Icon>
+                               <span v-show="!isCollapsed">文章</span>
+                            </template>
+                            <MenuItem to="/home/postsList" name="2-1">文章列表</MenuItem>
+                            <MenuItem to="/home/postsEdit" name="2-2">添加文章</MenuItem>
+                            <MenuItem name="2-3">分类目录</MenuItem>
+                            <MenuItem name="2-4">标签列表</MenuItem>
+                        </Submenu>
+                        <Submenu name="3">
+                            <template slot="title">
+                                <Icon type="ios-analytics"></Icon>
+                                  <span v-show="!isCollapsed">页面</span>
+                            </template>
+                            <MenuItem to="/home/pageList" name="3-1">页面列表</MenuItem>
+                            <MenuItem to="/home/pageList" name="3-2">添加页面</MenuItem>
+                        </Submenu>
+                    </Menu>
             </Sider>
             <Layout class="rightLayout" >
                 <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
