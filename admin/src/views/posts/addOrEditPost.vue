@@ -18,8 +18,8 @@
                 <Input type="textarea" v-model="postForm.content" :rows="4" placeholder="请输入文章内容"></Input>
             </FormItem>
             <Form>
-                <Button @click="handleSubmit()" type="primary">确认</Button>
-                <Button @click="handleReset()" style="margin-left:8px">取消</Button>
+                <Button @click="handleSubmit()" type="primary">{{buttonName}}</Button>
+                <Button @click="handleReset()" style="margin-left:8px">取消{{isEdit}}</Button>
             </Form>
         </Form>
     </div>
@@ -27,6 +27,11 @@
 
 <script>
 //文章添加修改页面
+var postFormFixed={
+                title:'',
+                status:'publish',//发布状态下，才可以查询
+                content:'',
+            } //固定值 保持不变
 import base_mixins from '@/views/mixins'
 import * as type from '@/enums'
 export default {
@@ -35,15 +40,12 @@ export default {
     components:{},
     data(){
         return {
+            buttonName:'确认',
             isEdit:false,
             editId:0,
             currentData:[],
             spinShow:false,
-            postForm:{
-                title:'',
-                status:'publish',
-                content:'',
-            }
+            postForm:Object.assign({},postFormFixed) //不能直接赋值，否则postFormFixed值会变化
         }
     },
      props:{
@@ -69,6 +71,50 @@ export default {
                     }
                 }
     },
+    watch:{
+    //   '$route.path':function(newVal,oldVal){
+    //     console.log(newVal.path+"---"+oldVal.path);
+    //   },
+      $route(to, from) {
+        //   console.log('to:'+to.path);
+      }
+    },
+     beforeRouteEnter(to, from, next) {
+    // console.log(this, 'beforeRouteEnter'); // undefined
+    // console.log(to, '组件独享守卫beforeRouteEnter第一个参数');
+    // console.log(from, '组件独享守卫beforeRouteEnter第二个参数');
+    // console.log(next, '组件独享守卫beforeRouteEnter第三个参数');
+    next(vm => {
+      //因为当钩子执行前，组件实例还没被创建
+      // vm 就是当前组件的实例相当于上面的 this，所以在 next 方法里你就可以把 vm 当 this 来用了。
+      //console.log(vm);//当前组件的实例
+    });
+  },
+   //当路径不变，只有参数query或param改变时，用watch监控不到，可以用导航守卫beforeRouteUpdate。
+  beforeRouteUpdate(to, from, next) {
+      //debugger
+      this.isisEdit=false
+      this.postForm =postFormFixed
+      this.buttonName='确认'
+    //在当前路由改变，但是该组件被复用时调用
+    //对于一个带有动态参数的路径 /good/:id，在 /good/1 和 /good/2 之间跳转的时候，
+    // 由于会渲染同样的good组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 可以访问组件实例 `this`
+    // console.log(this, 'beforeRouteUpdate'); //当前组件实例
+    // console.log(to, '组件独享守卫beforeRouteUpdate第一个参数');
+    // console.log(from, '组件独享守beforeRouteUpdate卫第二个参数');
+    // console.log(next, '组件独享守beforeRouteUpdate卫第三个参数');
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    // console.log(this, 'beforeRouteLeave'); //当前组件实例
+    // console.log(to, '组件独享守卫beforeRouteLeave第一个参数');
+    // console.log(from, '组件独享守卫beforeRouteLeave第二个参数');
+    // console.log(next, '组件独享守卫beforeRouteLeave第三个参数');
+    next();
+  },
     computed:{
         postRules(){
              return { //可以一次返回多个值控制验证
@@ -86,12 +132,16 @@ export default {
                let _self=this
 
                let params=this.postForm
-                   //params.status =type.status_post_publish //发布状态下，才可以查询
+               //更新操作
+               if(this.isEdit ===true){
+                    params.id=this.editId
+               }
+               
                this.$store.dispatch('createOrUpdatePosts',params).then(res=>{
                 _self.spinShow =false
                 let config ={
                    type:type.tipMessage_success,
-                   msg:'添加文章成功！'
+                   msg:(_self.isEdit?'更新文章成功':'添加文章成功！')
                }
                _self.showMsg(config)
                
@@ -103,7 +153,7 @@ export default {
                    _self.spinShow =false
                    let config ={
                    type:type.tipMessage_error,
-                   msg:'添加章失败！ 代号：'+err
+                   msg:(_self.isEdit?'更新章失败！ 代号：':'添加章失败！ 代号：'+err)
                }
                _self.showMsg(config)
                })
@@ -116,26 +166,35 @@ export default {
         },
         //重缓存中获取需要编辑的数据
         getCurrentData(id){
+              //debugger
+            this.currentData={}
             let postList=this.$store.getters.postsList_state;
           if(postList && postList.length>0){
-                let tempData=  JSON.parse(postList)
-                 tempData =Array.from(tempData)
+                let tempDataList=  postList//JSON.parse(postList)
+                let  tempData = tempDataList;//Array.from(tempDataList)
                 if(tempData && tempData.length >0 ){
-              this.currentData = tempData.map(item=>{
-                  //debugger
-                  if(item.id==id){
-                     return item;
-                  } 
-                
-              })
-             console.warn('this.currentData'+this.currentData.length)
+                   // console.log('tempData:'+typeof(tempData))
+                    if(typeof(tempData)=='string')
+                    {
+                        tempData =Array.from(JSON.parse(tempData))
+                        // console.log('tempData2:'+tempData)
+                    }
+                   
+                    this.currentData = tempData.filter(item=>{
+                        //debugger
+                        if(item.id==id){
+                            return item;
+                        } 
+                        
+                    })
+                    //console.warn('this.currentData'+this.currentData.length)
           }
           }
         },
         //初始化编辑数据
         initEditData(){
             if(this.currentData.length>0){
-                 debugger
+                 //debugger
                     this.postForm.title = this.currentData[0].title.rendered
                     this.postForm.status = this.currentData[0].status
                     this.postForm.content = this.currentData[0].content.rendered
@@ -144,13 +203,15 @@ export default {
        
     },
     created(){
-        //debugger
+        //
         //获取编辑ID
         let currentId =this.$route.query.id 
         if(currentId != undefined && currentId!=null){
             this.editId =currentId
             if(this.editId!=0){
                 this.isEdit=true
+                this.buttonName ='更新'
+                  
                     this.getCurrentData(this.editId)
             }
         }
@@ -158,10 +219,12 @@ export default {
     },
     mounted(){
         //初始化编辑数据
-        if(this.isEdit){
+        this.$nextTick(()=>{
+              if(this.isEdit){
                 this.initEditData();
-        }
+               }
        
+        })
     },
     
 }

@@ -29,8 +29,8 @@ export default {
     mutations:{
         setPostsList (state, data) {
             state.postsList = data
-            debugger
-            setSessionstorage('postsList',JSON.stringify(data))
+            //debugger
+            setSessionstorage('postsList',JSON.stringify(data)) 
           }
     },
     //使用方法：this.$store.dispatch('getPostsList',params)
@@ -60,7 +60,7 @@ export default {
         * @detail https://developer.wordpress.org/rest-api/reference/posts/#list-posts
         */
         createOrUpdatePosts({ commit }, params){
-            debugger
+           // debugger
             return new Promise((resolve, reject) => {
                 try{
                     postsServices.createOrEditPosts(params).then(res=>{

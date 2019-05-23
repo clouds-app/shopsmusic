@@ -30,15 +30,21 @@ export const getOrSetPosts = ({page,per_page,slug,status }) => {
 * @update POST /wp/v2/posts/<id>
 * @detail https://developer.wordpress.org/rest-api/reference/posts/#list-posts
 */
-  export const createOrEditPosts = ({title,content,status }) => {
+  export const createOrEditPosts = ({title,content,status,id}) => {
     //参数
     const data = {
       title,
       content,
       status,
     }
+    debugger
+    //更新操作
+    let updateId= ''
+    if(id!=0){
+      updateId =`/${id}`
+    }
     return axios.request({
-      url: '/api/wp-json/wp/v2/posts',
+      url: `/api/wp-json/wp/v2/posts${updateId}`,
       data,
       method: 'post',
       transformRequest: [function (data) {
