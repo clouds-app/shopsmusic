@@ -4,6 +4,7 @@ import app from './module/app'
 import user from './module/user'
 import page from './module/pages'
 import posts from './module/posts'
+import categories from './module/categories'
 
 Vue.use(Vuex)
 
@@ -22,5 +23,6 @@ export default new Vuex.Store({
     user,
     page,
     posts,
+    categories,
   }
 })

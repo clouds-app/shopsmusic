@@ -15,11 +15,11 @@
             </Select>
         </FormItem>
             <FormItem lable="content" prop="content">
-                <Input type="textarea" v-model="postForm.content" :rows="4" placeholder="请输入文章内容"></Input>
+                <Input type="textarea" v-model="postForm.content" :rows="4"  placeholder="请输入文章内容"></Input>
             </FormItem>
             <Form>
-                <Button @click="handleSubmit()" type="primary">{{buttonName}}</Button>
-                <Button @click="handleReset()" style="margin-left:8px">取消{{isEdit}}</Button>
+                <Button :disabled="disabledSubmit" @click="handleSubmit()" long type="success">{{buttonName}}</Button>
+                <!-- <Button @click="handleReset()" style="margin-left:8px">取消</Button> -->
             </Form>
         </Form>
     </div>
@@ -40,6 +40,7 @@ export default {
     components:{},
     data(){
         return {
+            disabledSubmit:false,
             buttonName:'确认',
             isEdit:false,
             editId:0,
@@ -141,12 +142,12 @@ export default {
             this.$refs.postForm.validate((valid)=>{ //validate 为iview Form 表单内置方法，详细参考：https://www.iviewui.com/components/form
             if(valid){
                _self.spinShow =true
-               
+               _self.disabledSubmit =true;
 
                let params=_self.postForm
                //更新操作
                 params.id = 0 
-                debugger
+                //debugger
                if(_self.isEdit){
                     params.id=_self.editId
                }
@@ -158,12 +159,18 @@ export default {
                    msg:(_self.isEdit?'更新文章成功':'添加文章成功！')
                }
                _self.showMsg(config)
-               
+               if(!_self.isEdit){ //添加成功后，清空数据
+                    _self.postForm = Object.assign({},postFormFixed)
+               }
+              
                //发布成功后等待跳转
                  setTimeout(() => {
-                   _self.HandleRedirectName('postsList')
-                }, 300);
+                   //_self.HandleRedirectName('postsList')
+                    _self.disabledSubmit =false;
+                    _self
+                }, 2000);
                }).catch(err=>{
+                    _self.disabledSubmit =false;
                    _self.spinShow =false
                    let config ={
                    type:type.tipMessage_error,

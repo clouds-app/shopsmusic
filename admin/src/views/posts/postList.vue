@@ -171,19 +171,19 @@ export default {
         force:false,
         type:'delete'
       }
-     this.$store.dispatch('getOperationPageById',params).then(res=>{
+     this.$store.dispatch('DeletePostById',params).then(res=>{
          _self.data.splice(index, 1);
          _self.spinShow = false;
          let config = {
             type: type.tipMessage_success,
-            msg: "删除页面成功！"
+            msg: "删除文章成功！"
           };
           _self.showMsg(config);
       }).catch(err=>{
          _self.spinShow = false;
           let config = {
             type: type.tipMessage_error,
-            msg: "删除页面失败！ 代号：" + err
+            msg: "删除文章失败！ 代号：" + err
           };
           _self.showMsg(config);
       })
