@@ -17,3 +17,13 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+/* eslint-disable no-new */
+// new Vue({
+//   el: '#app',  //在实例挂载之后，元素可以用 vm.$el 访问。限制：只在由 new 创建的实例中遵守。
+//   router,
+//   i18n,
+//   store,
+//   render: h => h(App)
+// })
+

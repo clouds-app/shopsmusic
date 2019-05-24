@@ -20,8 +20,8 @@
                             </template>
                             <MenuItem to="/home/postsList" name="2-1">文章列表</MenuItem>
                             <MenuItem to="/home/postsEdit" name="2-2">添加文章</MenuItem>
-                            <MenuItem name="2-3">分类目录</MenuItem>
-                            <MenuItem name="2-4">标签列表</MenuItem>
+                            <MenuItem to="/home/category"  name="2-3">分类目录</MenuItem>
+                            <MenuItem to="/home/meta"  name="2-4">标签列表</MenuItem>
                         </Submenu>
                         <Submenu name="3">
                             <template slot="title">
@@ -34,20 +34,45 @@
                     </Menu>
             </Sider>
             <Layout class="rightLayout" >
-                <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
-                    <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 0px'}" type="md-menu" size="24"></Icon>
-                </Header>
+                 
+                   <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
+                        
+                        <!--type="flex"  align="top" class="code-row-bg" -->
+                           <Row >
+                             <!-- 抽屉按钮 -->
+                            <Col span="2" style="border: 1px solid blue;">
+                              <p>
+                            <Icon @click.native="collapsedSider" :class="rotateIcon"  type="md-menu" size="24"></Icon>
+                              </p>
+                            </Col> 
+                            <!-- 顶部菜单 style="border: 1px solid yellow;"-->
+                            <Col span="20" >
+                              <div style="height: 60px;overflow:hidden;">
+                                <tags-nav :value="$route" @input="handleClick" :list="tagNavList()"  @on-close="handleCloseTag"/>
+                              </div>
+                             
+                            </Col>
+                             <!--用户信息 -->
+                            <Col span="2" style="border: 1px solid red;">
+                             <p>col-4</p>
+                            </Col>
+                        </Row>
+                 </Header>
+               
+  
+          
+                <!-- <tags-nav></tags-nav> -->
                 <Content :style="{padding: '0 16px 16px'}">
                     <Breadcrumb :style="{margin: '10px 0'}">
                         <BreadcrumbItem>首页</BreadcrumbItem>
                         <!-- <BreadcrumbItem>Components</BreadcrumbItem>
                         <BreadcrumbItem>Layout</BreadcrumbItem> -->
                     </Breadcrumb>
-                    <Card>
+                    <!-- <Card>
                         <div style="height: 600px">
                           <router-view/>
                         </div>
-                    </Card>
+                    </Card> -->
                 </Content>
             </Layout>
         </Layout>
@@ -55,15 +80,29 @@
 </template>
 
 <script>
-
+import { getNewTagList, routeEqual } from '@/libs/util'
+import TagsNav from '_c/tags-nav'
+import {mapMutations} from 'vuex'
 export default {
   name: 'home',
   components: {
-
+        TagsNav
   },
   data(){
     return {
       isCollapsed:false,
+    }
+  },
+watch: {
+     //监控路由，先将首页默认添加到菜单列表
+    '$route' (newRoute) {
+      const { name, query, params, meta } = newRoute
+      this.addTag({
+        route: { name, query, params, meta },
+        type: 'push'
+      })
+      this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
+     
     }
   },
   computed: {
@@ -81,14 +120,64 @@ export default {
             },
         },
  methods:{
-    collapsedSider () {
+     ...mapMutations(['setTagNavList','addTag']),
+     collapsedSider () {
                 this.$refs.side1.toggleCollapse();
+            },
+     handleCloseTag (res, type, route) {
+        if (type !== 'others') {
+            if (type === 'all') {
+            this.turnToPage(this.$config.homeName)
+            } else {
+            if (routeEqual(this.$route, route)) {
+                this.closeTag(route)
             }
+            }
+        }
+        this.setTagNavList(res)
+    },
+     tagNavList() {
+         debugger
+       let tempList= this.$store.state.app.tagNavList
+       console.warn('templist'+JSON.stringify(tempList))
+
+       return tempList//Array.from(tempList)
+    },
+     //跳转到指定页面
+     handleClick (item) {
+       this.turnToPage(item)
+    },
+    turnToPage (route) {
+        let { name, params, query } = {}
+        if (typeof route === 'string'){
+            name = route
+        } 
+        else {
+            name = route.name
+            params = route.params
+            query = route.query
+        }
+        if (name.indexOf('isTurnByHref_') > -1) {
+            window.open(name.split('_')[1])
+            return
+        }
+        this.$router.push({
+            name,
+            params,
+            query
+        })
+        }
  }
   
 }
 </script>
 <style lang="less" scoped>
+
+.topMenu{
+    width: 100%;
+    border: 1px solid blue;
+    background:white;
+}
 .ivu-layout-header{
   padding:0 15px;
 }
