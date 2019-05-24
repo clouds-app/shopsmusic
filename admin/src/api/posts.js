@@ -32,6 +32,7 @@ export const getOrSetPosts = ({page,per_page,slug,status }) => {
 */
   export const createOrEditPosts = ({title,content,status,id}) => {
     //参数
+    debugger
     const data = {
       title,
       content,
@@ -40,7 +41,7 @@ export const getOrSetPosts = ({page,per_page,slug,status }) => {
     debugger
     //更新操作
     let updateId= ''
-    if(id!=0){
+    if(id!=0 && id !=null){
       updateId =`/${id}`
     }
     return axios.request({

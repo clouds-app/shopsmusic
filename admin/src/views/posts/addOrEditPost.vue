@@ -79,21 +79,32 @@ export default {
         //   console.log('to:'+to.path);
       }
     },
+    //经过仔细分析官方文档后发现next中的函数执行在页面mounted之后
+   // 列表总是需要一秒后才能加载出来，出现了页面抖动，
+   //在解决这个问题时想到了路由中的beforeRouteEnter方法，
+   //在路由跳转前加载数据
      beforeRouteEnter(to, from, next) {
+         //alert('beforeRouteEnter')
     // console.log(this, 'beforeRouteEnter'); // undefined
     // console.log(to, '组件独享守卫beforeRouteEnter第一个参数');
     // console.log(from, '组件独享守卫beforeRouteEnter第二个参数');
     // console.log(next, '组件独享守卫beforeRouteEnter第三个参数');
     next(vm => {
+       // alert('beforeRouteEnter-next')
       //因为当钩子执行前，组件实例还没被创建
       // vm 就是当前组件的实例相当于上面的 this，所以在 next 方法里你就可以把 vm 当 this 来用了。
       //console.log(vm);//当前组件的实例
+      //===============正确用法================
+    //   axios.get('/api/getCity.json').then(res=>{
+    //       next(vm =>vm.setData(res)) //不要直接调用方法
+    //   })
+      //===============================
     });
   },
    //当路径不变，只有参数query或param改变时，用watch监控不到，可以用导航守卫beforeRouteUpdate。
   beforeRouteUpdate(to, from, next) {
       //debugger
-      this.isisEdit=false
+      this.isEdit = false
       this.postForm =postFormFixed
       this.buttonName='确认'
     //在当前路由改变，但是该组件被复用时调用
@@ -126,18 +137,21 @@ export default {
     methods:{
         //提交文章
         handleSubmit(){
+            let _self=this
             this.$refs.postForm.validate((valid)=>{ //validate 为iview Form 表单内置方法，详细参考：https://www.iviewui.com/components/form
             if(valid){
-               this.spinShow =true
-               let _self=this
+               _self.spinShow =true
+               
 
-               let params=this.postForm
+               let params=_self.postForm
                //更新操作
-               if(this.isEdit ===true){
-                    params.id=this.editId
+                params.id = 0 
+                debugger
+               if(_self.isEdit){
+                    params.id=_self.editId
                }
                
-               this.$store.dispatch('createOrUpdatePosts',params).then(res=>{
+               _self.$store.dispatch('createOrUpdatePosts',params).then(res=>{
                 _self.spinShow =false
                 let config ={
                    type:type.tipMessage_success,
@@ -203,7 +217,7 @@ export default {
        
     },
     created(){
-        //
+        //alert('created')
         //获取编辑ID
         let currentId =this.$route.query.id 
         if(currentId != undefined && currentId!=null){
@@ -218,8 +232,10 @@ export default {
       
     },
     mounted(){
+         //alert('mounted')
         //初始化编辑数据
         this.$nextTick(()=>{
+            //alert('mounted-nextTick')
               if(this.isEdit){
                 this.initEditData();
                }
