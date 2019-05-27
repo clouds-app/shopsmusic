@@ -15,7 +15,7 @@ export default [
     name: 'home',
     component: Home,
     meta:{
-      title:'',
+      title: '首页',
       needLogin:false,
       icon: 'logo-buffer',
       keepAlive:true

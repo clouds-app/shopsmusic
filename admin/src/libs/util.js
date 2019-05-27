@@ -224,6 +224,7 @@ export const getParams = url => {
  * @param {String} name 当前关闭的标签的name
  */
 export const getNextRoute = (list, route) => {
+  //debugger
   let res = {}
   if (list.length === 2) {
     res = getHomeRoute(list)

@@ -28,14 +28,15 @@
             <DropdownItem name="close-others" divided>关闭其他</DropdownItem>
           </DropdownMenu>
         </Dropdown>
-      </div><!-- 下拉按钮关闭 end-->
+      </div>
+      <!-- 下拉按钮关闭 end-->
 
     <!-- 鼠标滚轮事件 FF使用DOMMouseScroll，其他浏览器都是用mousewheel-->
     <div class="scroll-outer" ref="scrollOuter" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll">
-        <div ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px'}">
+        <div  ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px'}">
         <transition-group name="taglist-moving-animation">
             <!-- 详细：https://www.iviewui.com/components/tag -->
-            <Tag
+            <Tag 
             type="dot"
             v-for="(item, index) in list"
             ref="tagsPageOpened"
@@ -120,8 +121,14 @@ export default {
                 }
                 })
               } else {
+                 // debugger
                 this.close(current)
             }
+        },
+        //关闭指定标签窗口
+       close (route) {
+        let res = this.list.filter(item => !routeEqual(route, item))
+        this.$emit('on-close', res, undefined, route)
         },
         //Tag-原生点击事件click.native
         handleClick (item) {
@@ -133,7 +140,7 @@ export default {
         },
         //显示标题
         showTitleInside (item) {
-          return '0000'//showTitle(item, this)
+          return showTitle(item, this)
         },
         //从当前菜单上下文，获取偏移变量
          contextMenu (item, e) {
@@ -153,8 +160,8 @@ export default {
                 let res = this.list.filter(item => item.name === this.$config.homeName)
                 this.$emit('on-close', res, 'all')
             } else if (type.includes('others')) {
-                console.warn('this.list:',typeof(this.list))
-                console.warn('this.list value:',this.list)
+               // console.warn('this.list:',typeof(this.list))
+               // console.warn('this.list value:',this.list)
                 // 关闭除当前页和home页的其他页
                 if(this.list && this.list.length>0){
                        let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === this.$config.homeName)
@@ -168,7 +175,7 @@ export default {
         },
         //通过路由获取所有tag或添加元素
          getTagElementByRoute (route) {
-             debugger
+             //debugger
              let _self=this
             this.$nextTick(() => {
                let refsTag = _self.$refs.tagsPageOpened

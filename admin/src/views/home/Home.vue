@@ -39,8 +39,8 @@
                         
                         <!--type="flex"  align="top" class="code-row-bg" -->
                            <Row >
-                             <!-- 抽屉按钮 -->
-                            <Col span="2" style="border: 1px solid blue;">
+                             <!-- 抽屉按钮 style="border: 1px solid blue;"-->
+                            <Col span="2" >
                               <p>
                             <Icon @click.native="collapsedSider" :class="rotateIcon"  type="md-menu" size="24"></Icon>
                               </p>
@@ -48,13 +48,13 @@
                             <!-- 顶部菜单 style="border: 1px solid yellow;"-->
                             <Col span="20" >
                               <div style="height: 60px;overflow:hidden;">
-                                <tags-nav :value="$route" @input="handleClick" :list="tagNavList()"  @on-close="handleCloseTag"/>
+                                <tags-nav  :value="$route" @input="handleClick" :list="tagNavList()"  @on-close="handleCloseTag"/>
                               </div>
                              
                             </Col>
-                             <!--用户信息 -->
-                            <Col span="2" style="border: 1px solid red;">
-                             <p>col-4</p>
+                             <!--用户信息 style="border: 1px solid red;"-->
+                            <Col span="2" >
+                             <p>用户信息</p>
                             </Col>
                         </Row>
                  </Header>
@@ -68,11 +68,13 @@
                         <!-- <BreadcrumbItem>Components</BreadcrumbItem>
                         <BreadcrumbItem>Layout</BreadcrumbItem> -->
                     </Breadcrumb>
-                    <!-- <Card>
+                    <Card>
                         <div style="height: 600px">
-                          <router-view/>
+                           <keep-alive >
+                            <router-view/>
+                          </keep-alive>
                         </div>
-                    </Card> -->
+                    </Card>
                 </Content>
             </Layout>
         </Layout>
@@ -96,13 +98,16 @@ export default {
 watch: {
      //监控路由，先将首页默认添加到菜单列表
     '$route' (newRoute) {
-      const { name, query, params, meta } = newRoute
-      this.addTag({
-        route: { name, query, params, meta },
-        type: 'push'
-      })
-      this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
-     
+      if(newRoute!=null){
+        const { name, query, params, meta } = newRoute
+        this.addTag({
+          route: { name, query, params, meta },
+          type: 'push'
+        })
+       // debugger
+        let tempArray =this.tagNavList()
+        this.setTagNavList(getNewTagList(tempArray, newRoute)) //add home page in list
+        }
     }
   },
   computed: {
@@ -119,8 +124,17 @@ watch: {
                 ];
             },
         },
- methods:{
-     ...mapMutations(['setTagNavList','addTag']),
+  mounted(){
+          this.addHomeFirst()
+        },
+  methods:{
+     ...mapMutations(['setTagNavList','addTag','closeTag']),
+     addHomeFirst(){
+        const { name, params, query, meta } = this.$route
+        this.addTag({
+          route: { name, params, query, meta }
+        })
+     },
      collapsedSider () {
                 this.$refs.side1.toggleCollapse();
             },
@@ -130,6 +144,7 @@ watch: {
             this.turnToPage(this.$config.homeName)
             } else {
             if (routeEqual(this.$route, route)) {
+               //debugger
                 this.closeTag(route)
             }
             }
@@ -137,9 +152,9 @@ watch: {
         this.setTagNavList(res)
     },
      tagNavList() {
-         debugger
+         //debugger
        let tempList= this.$store.state.app.tagNavList
-       console.warn('templist'+JSON.stringify(tempList))
+      // console.warn('templist'+JSON.stringify(tempList))
 
        return tempList//Array.from(tempList)
     },
@@ -148,6 +163,7 @@ watch: {
        this.turnToPage(item)
     },
     turnToPage (route) {
+      //debugger
         let { name, params, query } = {}
         if (typeof route === 'string'){
             name = route
