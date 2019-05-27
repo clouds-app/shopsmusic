@@ -27,7 +27,8 @@ export default [
       meta: {
         hideInMenu: false,
         title: '页面列表',
-        notCache: true,
+        notCache: false,
+        keepAlive: true, 
         icon: 'md-home'
       },
       component:()=>import(/* webpackChunkName: "pageList" */ '@/views/page/pageList.vue')
@@ -38,7 +39,8 @@ export default [
         meta: {
           hideInMenu: false,
           title: '文章列表',
-          notCache: true,
+          keepAlive: true, 
+          notCache: false, //this.$route.meta.keepAlive = false;
           icon: 'md-home'
         },
         component:()=>import(/* webpackChunkName: "pageList" */ '@/views/posts/postList.vue')
@@ -49,7 +51,8 @@ export default [
         meta: {
           hideInMenu: false,
           title: '文章编辑',
-          notCache: true,
+          keepAlive: true, 
+          notCache: false,
           icon: 'md-home'
         },
         component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/posts/addOrEditPost.vue')
@@ -60,7 +63,7 @@ export default [
         meta: {
           hideInMenu: false,
           title: '类别列表',
-          notCache: true,
+          notCache: false,
           icon: 'md-home'
         },
         component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/category/category.vue')
@@ -71,7 +74,7 @@ export default [
         meta: {
           hideInMenu: false,
           title: '标签列表',
-          notCache: true,
+          notCache: false,
           icon: 'md-home'
         },
         component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/meta/meta.vue')

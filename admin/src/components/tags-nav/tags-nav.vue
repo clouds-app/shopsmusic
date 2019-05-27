@@ -36,7 +36,7 @@
         <div  ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px'}">
         <transition-group name="taglist-moving-animation">
             <!-- 详细：https://www.iviewui.com/components/tag -->
-            <Tag 
+            <Tag class="single-Tag" 
             type="dot"
             v-for="(item, index) in list"
             ref="tagsPageOpened"
@@ -57,8 +57,8 @@
     </div>
 </template>
 <script>
-import { showTitle, routeEqual } from '@/libs/util'
-import beforeClose from '@/router/before-close'
+import { routeEqual } from './tools'
+//import beforeClose from '@/router/before-close'
 export default {
     name:'tags-nav',
     props: {
@@ -114,24 +114,27 @@ export default {
     methods:{
         //Tag-关闭时触发事件
          handleClose (current) {
-            if (current.meta && current.meta.beforeCloseName && current.meta.beforeCloseName in beforeClose) {
-                new Promise(beforeClose[current.meta.beforeCloseName]).then(close => {
-                if (close) {
-                    this.close(current)
-                }
-                })
-              } else {
-                 // debugger
-                this.close(current)
-            }
+              this.close(current)
+            // if (current.meta && current.meta.beforeCloseName && current.meta.beforeCloseName in beforeClose) {
+            //     new Promise(beforeClose[current.meta.beforeCloseName]).then(close => {
+            //     if (close) {
+            //         this.close(current)
+            //     }
+            //     })
+            //   } else {
+            //      // debugger
+            //     this.close(current)
+            // }
         },
         //关闭指定标签窗口
        close (route) {
+           // debugger
         let res = this.list.filter(item => !routeEqual(route, item))
         this.$emit('on-close', res, undefined, route)
         },
         //Tag-原生点击事件click.native
         handleClick (item) {
+           // debugger
           this.$emit('input', item) //触发input事件
         },
         //判断两个路由对象是否相等(当前页面，即将关闭页面)
@@ -140,7 +143,7 @@ export default {
         },
         //显示标题
         showTitleInside (item) {
-          return showTitle(item, this)
+          return item.meta.title //showTitle(item, this)
         },
         //从当前菜单上下文，获取偏移变量
          contextMenu (item, e) {
@@ -154,28 +157,28 @@ export default {
         },
         //下拉关闭按钮点击处理/点击菜单项时触发
          handleTagsOption (type) {
+             debugger
              //console.warn('type.includes:'+type.includes('all'));
             if (type.includes('all')) {
                 // 关闭所有，除了home
                 let res = this.list.filter(item => item.name === this.$config.homeName)
                 this.$emit('on-close', res, 'all')
             } else if (type.includes('others')) {
-               // console.warn('this.list:',typeof(this.list))
-               // console.warn('this.list value:',this.list)
                 // 关闭除当前页和home页的其他页
-                if(this.list && this.list.length>0){
-                       let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === this.$config.homeName)
-                        this.$emit('on-close', res, 'others', this.currentRouteObj)
-                        setTimeout(() => {
-                            this.getTagElementByRoute(this.currentRouteObj)
-                        }, 100)
+                if(this.list && this.list.length>0)
+                {
+                        let resData = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === this.$config.homeName)
+                        this.$emit('on-close', resData, 'others', this.currentRouteObj)
+                        // setTimeout(() => {
+                        //     this.getTagElementByRoute(this.currentRouteObj)
+                        // }, 100)
                 }
               
             }
         },
         //通过路由获取所有tag或添加元素
          getTagElementByRoute (route) {
-             //debugger
+             debugger
              let _self=this
             this.$nextTick(() => {
                let refsTag = _self.$refs.tagsPageOpened

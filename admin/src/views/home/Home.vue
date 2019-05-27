@@ -70,9 +70,13 @@
                     </Breadcrumb>
                     <Card>
                         <div style="height: 600px">
-                           <keep-alive >
-                            <router-view/>
-                          </keep-alive>
+                         <!-- 需要被缓存的路由入口 -->
+                        <keep-alive>  
+                            <router-view v-if="$route.meta.keepAlive"></router-view>
+                        </keep-alive>
+
+                        <!-- 不需要被缓存的路由入口 -->
+                        <router-view v-if="!$route.meta.keepAlive"></router-view>
                         </div>
                     </Card>
                 </Content>
@@ -82,9 +86,10 @@
 </template>
 
 <script>
-import { getNewTagList, routeEqual } from '@/libs/util'
+
+import { getNewTagList, routeEqual,setTagNavList,addTag,closeTag,closeTagById,setTagNavListInLocalstorage, getTagNavListFromLocalstorage} from '_c/tags-nav/tools'
 import TagsNav from '_c/tags-nav'
-import {mapMutations} from 'vuex'
+//import {mapMutations} from 'vuex'
 export default {
   name: 'home',
   components: {
@@ -100,13 +105,13 @@ watch: {
     '$route' (newRoute) {
       if(newRoute!=null){
         const { name, query, params, meta } = newRoute
-        this.addTag({
+        addTag({
           route: { name, query, params, meta },
           type: 'push'
         })
        // debugger
-        let tempArray =this.tagNavList()
-        this.setTagNavList(getNewTagList(tempArray, newRoute)) //add home page in list
+        let tempArray = this.tagNavList()
+        setTagNavList(getNewTagList(tempArray, newRoute)) //add home page in list
         }
     }
   },
@@ -128,10 +133,10 @@ watch: {
           this.addHomeFirst()
         },
   methods:{
-     ...mapMutations(['setTagNavList','addTag','closeTag']),
+     //...mapMutations(['setTagNavList','addTag','closeTag']),
      addHomeFirst(){
         const { name, params, query, meta } = this.$route
-        this.addTag({
+       addTag({
           route: { name, params, query, meta }
         })
      },
@@ -139,24 +144,27 @@ watch: {
                 this.$refs.side1.toggleCollapse();
             },
      handleCloseTag (res, type, route) {
-        if (type !== 'others') {
-            if (type === 'all') {
-            this.turnToPage(this.$config.homeName)
-            } else {
-            if (routeEqual(this.$route, route)) {
-               //debugger
-                this.closeTag(route)
+       debugger
+       if (type === 'all') {
+                this.turnToPage(this.$config.homeName)
+              }else if (type === 'others'){
+               this.turnToPage(this.$config.homeName) //因数据不即时刷新，因跳转两次可以刷新数据
+                let currentRoute=res[1].name
+                this.turnToPage(currentRoute)
+              }
+              else {
+              if (routeEqual(this.$route, route)) {
+                  closeTag(route)
+              }else{
+                 closeTagById(route,this.$route)
+              }
             }
-            }
-        }
-        this.setTagNavList(res)
+            
+       setTagNavList(res)
     },
      tagNavList() {
-         //debugger
-       let tempList= this.$store.state.app.tagNavList
-      // console.warn('templist'+JSON.stringify(tempList))
-
-       return tempList//Array.from(tempList)
+       let tempList= getTagNavListFromLocalstorage() || []
+       return tempList
     },
      //跳转到指定页面
      handleClick (item) {

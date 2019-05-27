@@ -15,7 +15,7 @@
       </template>
     
       <template slot="footer">
-        <span>i am footer</span>
+        <span>i am footer    <Button type="error" size="small" @click="removeCash()">删除缓存</Button></span>
       </template>
     </Table>
   </div>
@@ -93,6 +93,9 @@ export default {
   },
   methods: {
     ...mapActions(["getPostsList"]), //导出getPageList方法，并合并到当前methods中
+    removeCash(){
+      this.$route.meta.keepAlive = false;
+    },
     //初始化页面列表数据
     initData() {
       this.spinShow = true;
@@ -113,6 +116,7 @@ export default {
            this.formatData(res)
           this.spinShow = false;
           _self.showMsg(config);
+          this.$route.meta.keepAlive = true; //开始缓存
         })
         .catch(err => {
           this.spinShow = false;
