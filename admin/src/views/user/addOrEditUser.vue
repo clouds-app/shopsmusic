@@ -210,7 +210,10 @@ export default {
           //debugger
             this.userForm.username = this.currentData[0].name;
             //this.userForm.password = this.currentData[0].password;
-            this.userForm.email = this.currentData[0].acf.email;
+            if( this.currentData[0].acf){
+              this.userForm.email = this.currentData[0].acf.email;
+            }
+          
             this.userForm.description = this.currentData[0].description;
            
       }

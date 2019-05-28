@@ -150,7 +150,7 @@ export default {
                 this.$refs.side1.toggleCollapse();
             },
      handleCloseTag (res, type, route) {
-       debugger
+       //debugger
        if (type === 'all') {
                 this.addMenuToTag('home','首页')
               }

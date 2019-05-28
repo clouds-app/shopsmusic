@@ -147,7 +147,7 @@ export default {
                let params=_self.postForm
                //更新操作
                 params.id = 0 
-                debugger
+               // debugger
                if(_self.isEdit){
                     params.id=_self.editId
                }
