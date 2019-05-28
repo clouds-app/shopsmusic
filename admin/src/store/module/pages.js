@@ -24,9 +24,11 @@ export default {
                         resolve(data)
                         commit('setPageList',data)
                     }).catch(err=>{
-                        reject(err)
+                        let errData=err.response.data
+                        reject(errData.message)
                     })
                 }catch(err){
+                    console.error(err)
                     reject(serverBusyTips)
                 }
              

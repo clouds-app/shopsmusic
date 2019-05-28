@@ -49,7 +49,8 @@ export default {
                         resolve(data)
                         commit('setPostsList',data)
                     }).catch(err=>{
-                        reject(err)
+                        let errData=err.response.data
+                        reject(errData.message)
                     })
                 }catch(err){
                     console.error(err)
@@ -70,7 +71,8 @@ export default {
                         let data =res.data
                         resolve(data)
                     }).catch(err=>{
-                        reject(err)
+                        let errData=err.response.data
+                          reject(errData.message)
                     })
                 }catch(err){
                     console.error(err)
@@ -94,7 +96,8 @@ export default {
                         let data =res.data
                         resolve(data)
                     }).catch(err=>{
-                        reject(err)
+                        let errData=err.response.data
+                        reject(errData.message)
                     })
                 }catch(err){
                     console.error(err)

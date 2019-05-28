@@ -92,7 +92,7 @@ export default {
     ...mapActions(["getUserList"]), //导出getUserList方法，并合并到当前methods中
     getUserEmail(user){
         //debugger
-        if(user && user.acf.email!=null)
+        if(user && user.acf && user.acf.email!=null)
         {
             return user.acf.email
         }

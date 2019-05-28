@@ -147,7 +147,7 @@ export default {
                let params=_self.postForm
                //更新操作
                 params.id = 0 
-                //debugger
+                debugger
                if(_self.isEdit){
                     params.id=_self.editId
                }
@@ -174,7 +174,7 @@ export default {
                    _self.spinShow =false
                    let config ={
                    type:type.tipMessage_error,
-                   msg:(_self.isEdit?'更新章失败！ 代号：':'添加章失败！ 代号：'+err)
+                   msg:(_self.isEdit?'更新章失败！ 代号：'+err:'添加章失败！ 代号：'+err)
                }
                _self.showMsg(config)
                })
