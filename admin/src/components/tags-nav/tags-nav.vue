@@ -45,7 +45,7 @@
             :data-route-item="item"
             @on-close="handleClose(item)"
             @click.native="handleClick(item)"
-            :closable="item.name !== $config.homeName"
+            :closable="item.name !== homeName"
             :color="isCurrentTag(item) ? 'primary' : 'default'"
             @contextmenu.prevent.native="contextMenu(item, $event)">
             {{ showTitleInside(item) }}
@@ -57,7 +57,7 @@
     </div>
 </template>
 <script>
-import { routeEqual } from './tools'
+import { routeEqual} from './tools'
 //import beforeClose from '@/router/before-close'
 export default {
     name:'tags-nav',
@@ -68,6 +68,10 @@ export default {
             default () {
                 return []
             }
+        },
+        homeName:{
+            type:String,
+            default:'home'
         }
      },
     data(){
@@ -92,10 +96,23 @@ export default {
     }
   },
    watch: {
+        // firstName: {
+        //     handler(newName, oldName) {
+        //     this.fullName = newName + ' ' + this.lastName;
+        //     },
+        //     // 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法
+        //     immediate: true
+        // },
         //监控路由变化
-        '$route' (to) {
-            this.getTagElementByRoute(to) //通过路由获取所有tag元素
-        },
+        // '$route' (to) {
+        //     console.log('-----ROUTER to moniter------'+to.path)
+        //     this.getTagElementByRoute(to) //通过路由获取所有tag元素
+        // },
+        // list(data){ //多页面，监控数据变化来判断 页面是否变化
+        //     //通过路由获取所有tag元素
+        //       //if(data.length)
+        //       console.log('-----list data moniter------'+JSON.stringify(data))
+        // },
         //监控下拉关闭按钮是否可见
         visibleMenuList (value) {
             if (value) {
@@ -128,7 +145,7 @@ export default {
         },
         //关闭指定标签窗口
        close (route) {
-           // debugger
+            debugger
         let res = this.list.filter(item => !routeEqual(route, item))
         this.$emit('on-close', res, undefined, route)
         },
@@ -147,7 +164,7 @@ export default {
         },
         //从当前菜单上下文，获取偏移变量
          contextMenu (item, e) {
-            if (item.name === this.$config.homeName) {
+            if (item.name === this.homeName) {
                 return
             }
             this.visibleMenuList = true
@@ -157,18 +174,26 @@ export default {
         },
         //下拉关闭按钮点击处理/点击菜单项时触发
          handleTagsOption (type) {
-             debugger
+             //debugger
              //console.warn('type.includes:'+type.includes('all'));
             if (type.includes('all')) {
                 // 关闭所有，除了home
-                let res = this.list.filter(item => item.name === this.$config.homeName)
+                let res = this.list.filter(item => item.name === this.homeName)
                 this.$emit('on-close', res, 'all')
             } else if (type.includes('others')) {
                 // 关闭除当前页和home页的其他页
                 if(this.list && this.list.length>0)
-                {
-                        let resData = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === this.$config.homeName)
-                        this.$emit('on-close', resData, 'others', this.currentRouteObj)
+                {   
+                    debugger
+                        if(this.currentRouteObj.name ===this.homeName){
+                              let res = this.list.filter(item => item.name === this.homeName)
+                              this.$emit('on-close', res, 'all')
+                        }
+                        else{
+                            let resData = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === this.homeName)
+                            this.$emit('on-close', resData, 'others', this.currentRouteObj)
+                        }
+                        
                         // setTimeout(() => {
                         //     this.getTagElementByRoute(this.currentRouteObj)
                         // }, 100)
@@ -176,9 +201,10 @@ export default {
               
             }
         },
-        //通过路由获取所有tag或添加元素
+        //通过路由获取所有tag或添加元素 route: { name, query, params, meta } //meta ={ meta:{ title: '首页', keepAlive:true}}
          getTagElementByRoute (route) {
-             debugger
+             return
+             //debugger
              let _self=this
             this.$nextTick(() => {
                let refsTag = _self.$refs.tagsPageOpened

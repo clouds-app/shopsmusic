@@ -1,7 +1,8 @@
-import router from '@/router'
+// import router from '@/router'
+// import { reject } from 'q';
 
 export const homeName ='home' //首页标签路由名称
-
+export var currentRoute= {} //当前路径路由
 /**
  * @description 本地存储和获取标签导航列表
  */
@@ -168,7 +169,7 @@ export const objEqual = (obj1, obj2) => {
   //添加标签
   // 使用方法：addTag({route: { name, query, params, meta }, type: 'push'})
   export const addTag = ({ route, type = 'unshift' })=> {
-      debugger 
+      //debugger 
     let router = getRouteTitleHandled(route)
     if (!routeHasExist(tagNavList, router)) {
       if (type === 'push') {
@@ -183,34 +184,101 @@ export const objEqual = (obj1, obj2) => {
   }
 
   //关闭标签
-  export const  closeTag = (route) =>{
-      debugger
+  export const  closeTag = (route,callback) =>{
+      //debugger
     let tag = tagNavList.filter(item => routeEqual(item, route))
     route = tag[0] ? tag[0] : null
     if (!route) {
         return
     }
-    closePage(route)
+    closePage(route,callback)
   }
 
   
-  //关闭指定标签
-  export const  closeTagById = (route,currentRoute) =>{
+  //关闭指定标签 返回需要跳转的页面
+  export const  closeTagById = (route,currentRoute,callback) =>{
     debugger
   let tag = tagNavList.filter(item => routeEqual(item, route))
   route = tag[0] ? tag[0] : null
   if (!route) {
       return
   }
-  router.push(homeName)  ////因数据不即时刷新，因跳转两次可以刷新数据 import router from '@/router'
-  router.push(currentRoute) 
+  // router.push(homeName)  ////因数据不即时刷新，因跳转两次可以刷新数据 import router from '@/router'
+  // router.push(currentRoute) 
+  callback(currentRoute)
 }
 
-  //关闭页面
-  const closePage = (route) => {
+  //关闭页面,返回需要跳转的页面
+  export const closePage = (route,callback) => {
+    debugger
     const nextRoute = getNextRoute(tagNavList, route)
     tagNavList = tagNavList.filter(item => {
+      //debugger
       return !routeEqual(item, route)
     })
-    router.push(nextRoute) //跳转到指定路由页面，  import router from '@/router'
+    callback(nextRoute)
+    //router.push(nextRoute) //跳转到指定路由页面，  import router from '@/router'
   }
+//==================================below  wat out temp=======================================================
+  //添加页面到列表 actionPath,title
+  export const addMenuToTagEven = (actionPath,title,callback)=>{
+   let tagRoute={name:actionPath,params:{}, query:{}, meta:{title:title}}
+   addRoutToTagEven(tagRoute,callback)
+  }
+
+  //添加RoutT页面到列表 tagRoute
+  export const addRoutToTagEven = (tagRoute,callback) =>{
+    currentRoute=tagRoute
+     addTag({
+       route: tagRoute,
+       type:'push'
+     })
+    // turnToPage(homeName)
+     turnToPage(tagRoute,callback)
+  }
+
+  //跳转到指定页面
+  export const  turnToPage =(route,callback) =>{
+      let { name, params, query } = {}
+      if (typeof route === 'string'){
+          name = route
+      } 
+      else {
+          name = route.name
+          params = route.params
+          query = route.query
+          meta =route.meta
+      }
+      if (name.indexOf('isTurnByHref_') > -1) {
+          window.open(name.split('_')[1])
+          return
+      }
+      callback({
+        name,
+        params,
+        query,
+        meta
+       })
+     }
+//关闭指定页面，关闭所有，关闭其他
+export const  handleCloseTagEven = (res, type, route) => {
+      if (type === 'all') {
+               addMenuToTag('home','首页')
+             }
+             else if (type === 'others'){
+                let currentRoute=res[1]
+                addRoutToTag(currentRoute)
+             }
+             else {
+             if (routeEqual(currentRoute, route)) {
+                   closeTag(route,(res=>{
+                         addRoutToTag(res)
+                   }))
+             }else{
+              closeTagById(route,currentRoute,(res=>{
+                     addRoutToTag(res)
+              }))
+             }
+           }
+      setTagNavList(res)
+   }

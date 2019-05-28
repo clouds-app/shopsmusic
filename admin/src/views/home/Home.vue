@@ -8,7 +8,7 @@
                                   <Icon type="ios-navigate"></Icon>
                                 <span v-show="!isCollapsed">仪表盘</span>
                             </template>
-                             <MenuItem to="/home" name="1-1">首页</MenuItem>
+                             <MenuItem to="/home" name="1-1" @click.native="addMenuToTag('home','首页')">首页</MenuItem>
                              <MenuItem to="/login" name="1-2">
                              <span v-show="!isCollapsed">登陆</span>
                             </MenuItem>
@@ -18,10 +18,10 @@
                                 <Icon type="ios-keypad"></Icon>
                                <span v-show="!isCollapsed">文章</span>
                             </template>
-                            <MenuItem to="/home/postsList" name="2-1">文章列表</MenuItem>
-                            <MenuItem to="/home/postsEdit" name="2-2">添加文章</MenuItem>
-                            <MenuItem to="/home/category"  name="2-3">分类目录</MenuItem>
-                            <MenuItem to="/home/meta"  name="2-4">标签列表</MenuItem>
+                            <MenuItem to="/home/postsList" @click.native="addMenuToTag('postsList','文章列表')" name="2-1">文章列表</MenuItem>
+                            <MenuItem to="/home/postsEdit"  @click.native="addMenuToTag('postsEdit','添加文章')" name="2-2">添加文章</MenuItem>
+                            <MenuItem to="/home/category"  @click.native="addMenuToTag('category','分类目录')" name="2-3">分类目录</MenuItem>
+                            <MenuItem to="/home/meta"  @click.native="addMenuToTag('meta','标签列表')" name="2-4">标签列表</MenuItem>
                         </Submenu>
                         <Submenu name="3">
                             <template slot="title">
@@ -48,7 +48,7 @@
                             <!-- 顶部菜单 style="border: 1px solid yellow;"-->
                             <Col span="20" >
                               <div style="height: 60px;overflow:hidden;">
-                                <tags-nav  :value="$route" @input="handleClick" :list="tagNavList()"  @on-close="handleCloseTag"/>
+                                <tags-nav  :value="currentRouteUrl" @input="addRoutToTag" :list="tagNavList()"  @on-close="handleCloseTag"/>
                               </div>
                              
                             </Col>
@@ -88,6 +88,7 @@
 <script>
 
 import { getNewTagList, routeEqual,setTagNavList,addTag,closeTag,closeTagById,setTagNavListInLocalstorage, getTagNavListFromLocalstorage} from '_c/tags-nav/tools'
+//import { addMenuToTagEven,addRoutToTagEven,handleCloseTagEven,tagNavList,currentRoute} from '_c/tags-nav/tools'
 import TagsNav from '_c/tags-nav'
 //import {mapMutations} from 'vuex'
 export default {
@@ -98,21 +99,7 @@ export default {
   data(){
     return {
       isCollapsed:false,
-    }
-  },
-watch: {
-     //监控路由，先将首页默认添加到菜单列表
-    '$route' (newRoute) {
-      if(newRoute!=null){
-        const { name, query, params, meta } = newRoute
-        addTag({
-          route: { name, query, params, meta },
-          type: 'push'
-        })
-       // debugger
-        let tempArray = this.tagNavList()
-        setTagNavList(getNewTagList(tempArray, newRoute)) //add home page in list
-        }
+    currentRouteUrl:{},//当前路由对象
     }
   },
   computed: {
@@ -130,15 +117,25 @@ watch: {
             },
         },
   mounted(){
-          this.addHomeFirst()
+          let homeRoute={name:'home',params:{}, query:{}, meta:{title:'首页'}}
+          this.addRoutToTag(homeRoute)
+          this.currentRouteUrl=homeRoute
         },
   methods:{
-     //...mapMutations(['setTagNavList','addTag','closeTag']),
-     addHomeFirst(){
-        const { name, params, query, meta } = this.$route
-       addTag({
-          route: { name, params, query, meta }
+     //原生点击事件-菜单
+     addMenuToTag(actionPath,title){
+       //debugger
+      let tagRoute={name:actionPath,params:{}, query:{}, meta:{title:title}}
+      this.addRoutToTag(tagRoute)
+     },
+     addRoutToTag(tagRoute){
+       this.currentRouteUrl=tagRoute
+        addTag({
+          route: tagRoute,
+          type:'push'
         })
+        this.turnToPage(this.$config.homeName)
+        this.turnToPage(tagRoute)
      },
      collapsedSider () {
                 this.$refs.side1.toggleCollapse();
@@ -146,17 +143,26 @@ watch: {
      handleCloseTag (res, type, route) {
        debugger
        if (type === 'all') {
-                this.turnToPage(this.$config.homeName)
-              }else if (type === 'others'){
-               this.turnToPage(this.$config.homeName) //因数据不即时刷新，因跳转两次可以刷新数据
-                let currentRoute=res[1].name
-                this.turnToPage(currentRoute)
+                this.addMenuToTag('home','首页')
+              }
+              else if (type === 'others'){
+                 let currentRoute=res[1]
+                 this.addRoutToTag(currentRoute)
               }
               else {
-              if (routeEqual(this.$route, route)) {
-                  closeTag(route)
+                //debugger
+              if (routeEqual(this.currentRouteUrl, route)) {
+                    closeTag(route,(res=>{
+                          this.addRoutToTag(res)
+                    }))
               }else{
-                 closeTagById(route,this.$route)
+               closeTagById(route,this.currentRouteUrl,(res=>{
+                 if (res.name==='home'){
+                    this.addMenuToTag('home','首页')
+                  }else{
+                    this.addRoutToTag(res)
+                  }
+               }))
               }
             }
             
@@ -168,7 +174,7 @@ watch: {
     },
      //跳转到指定页面
      handleClick (item) {
-       this.turnToPage(item)
+       this.addRoutToTag(item)
     },
     turnToPage (route) {
       //debugger
