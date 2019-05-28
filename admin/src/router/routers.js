@@ -3,7 +3,7 @@ import Home from '@/views/home/Home.vue'
 export default [
   {
       path: '/',
-      redirect: { name: 'home' }
+      redirect: { path: '/home' }
   },
   {
     path:'/login',
@@ -20,7 +20,20 @@ export default [
       icon: 'logo-buffer',
       keepAlive:true
     },
+    redirect:'/home/', //默认自路由跳转
     children:[ 
+      {
+        path:'/', //嵌套路径path不需要’/‘
+        name:'tableExample',
+        meta: {
+          hideInMenu: false,
+          title: '',
+          notCache: false,
+          keepAlive: true, 
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "tableExample" */ '_c/TableSelectByKey.vue')
+      },
       {
       path:'pageList', //嵌套路径path不需要’/‘
       name:'pageList',
@@ -66,7 +79,7 @@ export default [
           notCache: false,
           icon: 'md-home'
         },
-        component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/category/category.vue')
+        component:()=>import(/* webpackChunkName: "category" */ '@/views/category/category.vue')
       },
       {
         path:'meta',//嵌套路径path不需要’/‘
@@ -77,9 +90,39 @@ export default [
           notCache: false,
           icon: 'md-home'
         },
-        component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/meta/meta.vue')
+        component:()=>import(/* webpackChunkName: "meta" */ '@/views/meta/meta.vue')
       },
+      {
+        path:'user',//嵌套路径path不需要’/‘
+        name:'user',
+        meta: {
+          hideInMenu: false,
+          title: '用户列表',
+          notCache: false,
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "userList" */ '@/views/user/userList.vue')
+      },
+      {
+        path:'userEdit',//嵌套路径path不需要’/‘
+        name:'userEdit',
+        meta: {
+          hideInMenu: false,
+          title: '用户编辑',
+          notCache: false,
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/user/addOrEditUser.vue')
+      },
+      {
+         path:'*', //others route redirect to home/base
+         redirect:'/'
+      }
+      
     ]
   },
- 
+  {
+     path:'*',
+     redirect:'/home'
+  }
 ]

@@ -92,3 +92,84 @@ export const operationPageById = ({id,type}) => {
     }],
   })
 }
+
+//=============================================================================
+
+/**
+* @description  获取用户列表/get user list
+* @params {context,page,per_page,search,exclude,include,offset,order,orderby,slug,roles } 
+* @detail https://developer.wordpress.org/rest-api/reference/users/#list-users
+* @example $ curl http://demo.wp-api.org/wp-json/wp/v2/users
+*/
+
+export const getUsers = ({context,page,per_page,search,exclude,include,offset,order,orderby,slug,roles}) => {
+  //参数
+  const data = {
+     // context,page,per_page,search,exclude,include,offset,order,orderby,slug,roles
+  }
+  return axios.request({
+    url: '/api/wp-json/wp/v2/users',
+    data,
+    method: 'get',
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return Qs.stringify(data)
+    }],
+  })
+}
+
+
+/**
+* @description  删除指定用户/delete user by id
+* @params {id,force,reassign } 
+* @detail https://developer.wordpress.org/rest-api/reference/users/#delete-a-user
+* @example $ curl -X DELETE http://demo.wp-api.org/wp-json/wp/v2/users/<id>
+*/
+
+export const deleteUser = ({id,force,reassign}) => {
+//参数
+const data = {
+ // id,force,reassign
+}
+return axios.request({
+  url: `api/wp-json/wp/v2/users/${id}`,
+  data,
+  method: 'delete',
+  transformRequest: [function (data) {
+    // 对 data 进行任意转换处理
+    return Qs.stringify(data)
+  }],
+})
+}
+
+
+
+/**
+* @description 添加/修改用户/创建/更新用户 /create or update a user by id
+* @params {username【require】,name,first_name,last_name,email【require】,url,description,locale,nickname,slug,roles,password【require】,meta} 
+* @update POST /wp/v2/users/<id>
+* @detail https://developer.wordpress.org/rest-api/reference/users/#create-a-user
+* @example $ curl http://demo.wp-api.org/wp-json/wp/v2/users/<id>
+*/
+export const createOrEditUser = ({username,name,first_name,last_name,email,url,description,locale,nickname,slug,roles,password,meta,id}) => {
+  //参数
+  debugger
+  const data = {
+    username,email,password,description
+  }
+  //debugger
+  //更新操作
+  let updateId= ''
+  if(id!=0 && id !=null){
+    updateId =`/${id}`
+  }
+  return axios.request({
+    url: `/api/wp-json/wp/v2/users${updateId}`,
+    data,
+    method: 'post',
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return Qs.stringify(data)
+    }],
+  })
+}

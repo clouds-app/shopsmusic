@@ -16,7 +16,11 @@ export default {
       avatorImgPath: '',
       token: getToken(),
       access: '',
-      hasGetInfo: false
+      hasGetInfo: false,
+      userList:[],
+    },
+    getters:{
+      userList_state:state=>state.userList
     },
     mutations: {
       setAvator (state, avatorPath) {
@@ -39,6 +43,10 @@ export default {
       },
       setHasGetInfo (state, status) {
         state.hasGetInfo = status
+      },
+      //用户列表
+      setUserList(state,data){
+        state.userList =data
       }
     },
     actions: {
@@ -139,6 +147,7 @@ export default {
           userServices.operationPageById(params).then(res => {
           //debugger
             const data = res.data
+           
             resolve(data)
           }).catch(err => {
             let resData=err.response.data
@@ -150,5 +159,80 @@ export default {
         }
       })
     },
+ //============================user option==============================
+    /**
+    * @description  获取用户列表/get users list
+    * @params {context,page,per_page,search,exclude,include,offset,order,orderby,slug,roles } 
+    * @detail https://developer.wordpress.org/rest-api/reference/users/#list-users
+    * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/users
+    */
+    getUserList({commit,dispatch},params){
+      return new Promise((resolve,reject)=>{
+        try {
+          userServices.getUsers(params).then(res=>{
+              let data =res.data
+              commit('setUserList',data)
+              resolve(data)
+          }).catch(err=>{
+            let errData=err.response.data
+            reject(errData.message)
+          })
+          
+        } catch (err) {
+          console.error(err)
+          reject(serverBusyTips)
+        }
+      })
+    },
+    /**
+    * @description  删除指定用户/delete user by id
+    * @params {id,force,reassign } 
+    * @detail https://developer.wordpress.org/rest-api/reference/users/#delete-a-user
+    * @example $ curl -X DELETE http://demo.wp-api.org/wp-json/wp/v2/users/<id>
+    */
+    deleteUserById({commit,dispatch},params){
+      //
+      return new Promise((resolve,reject)=>{
+        try {
+          userServices.deleteUser(params).then(res=>{
+            let data = res.data
+            resolve(data)
+          }).catch(err=>{
+            let errData=err.response.data
+            reject(errData.message)
+          })
+          
+        } catch (err) {
+          console.error(err)
+          reject(serverBusyTips)
+        }
+      })
+    },
+    /**
+    * @description 添加/修改用户/创建/更新用户 /create or update a user by id
+    * @params {username【require】,name,first_name,last_name,email【require】,url,description,locale,nickname,slug,roles,password【require】,meta} 
+    * @update POST /wp/v2/users/<id>
+    * @detail https://developer.wordpress.org/rest-api/reference/users/#create-a-user
+    * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/users/<id>
+    */
+    createOrUpdateUser({commit,dispatch,state, getters,rootState, rootGetters},params){
+      debugger
+      return new Promise((resolve,reject)=>{
+        try {
+          userServices.createOrEditUser(params).then(res=>{
+            let data = res.data
+             resolve(data)
+          }).catch(err=>{
+            let errData=err.response.data
+            reject(errData.message)
+          })
+        } catch (err) {
+          console.error(err)
+          reject(serverBusyTips)
+        }
+      })
+    },
+        
+        
     }
   }

@@ -8,7 +8,7 @@
                                   <Icon type="ios-navigate"></Icon>
                                 <span v-show="!isCollapsed">仪表盘</span>
                             </template>
-                             <MenuItem to="/home" name="1-1" @click.native="addMenuToTag('home','首页')">首页</MenuItem>
+                             <MenuItem to="/home/" name="1-1" @click.native="addMenuToTag('home','首页')">首页</MenuItem>
                              <MenuItem to="/login" name="1-2">
                              <span v-show="!isCollapsed">登陆</span>
                             </MenuItem>
@@ -30,6 +30,14 @@
                             </template>
                             <MenuItem to="/home/pageList" name="3-1">页面列表</MenuItem>
                             <MenuItem to="/home/pageList" name="3-2">添加页面</MenuItem>
+                        </Submenu>
+                         <Submenu name="4">
+                            <template slot="title">
+                                <Icon type="md-people"></Icon>
+                                  <span v-show="!isCollapsed">用户</span>
+                            </template>
+                            <MenuItem to="/home/user" name="3-1">用户列表</MenuItem>
+                            <MenuItem to="/home/userEdit" name="3-2">添加用户</MenuItem>
                         </Submenu>
                     </Menu>
             </Sider>
@@ -54,7 +62,7 @@
                             </Col>
                              <!--用户信息 style="border: 1px solid red;"-->
                             <Col span="2" >
-                             <p>用户信息</p>
+                              <user-info></user-info>
                             </Col>
                         </Row>
                  </Header>
@@ -90,11 +98,12 @@
 import { getNewTagList, routeEqual,setTagNavList,addTag,closeTag,closeTagById,setTagNavListInLocalstorage, getTagNavListFromLocalstorage} from '_c/tags-nav/tools'
 //import { addMenuToTagEven,addRoutToTagEven,handleCloseTagEven,tagNavList,currentRoute} from '_c/tags-nav/tools'
 import TagsNav from '_c/tags-nav'
+import UserInfo from '_c/user-info'
 //import {mapMutations} from 'vuex'
 export default {
   name: 'home',
   components: {
-        TagsNav
+        TagsNav,UserInfo
   },
   data(){
     return {
