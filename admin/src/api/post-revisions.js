@@ -8,7 +8,7 @@ import Qs from 'qs'//这个库是 axios 里面包含的，不需要再下载了
 * @example $ curl  http://demo.wp-api.org/wp-json/wp/v2/posts/<parent>/revisions
 */
 
-export const getTags = ({parent}) => {
+export const getPostsRevisions = ({parent}) => {
     //参数
     const data = {
        //parent
@@ -32,7 +32,7 @@ export const getTags = ({parent}) => {
   * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/posts/<parent>/revisions/<id>
   */
   
-  export const deleteTags = ({id,parent}) => {
+  export const deletePostsRevisions = ({id,parent}) => {
   //参数
   const data = {
    // id,parent

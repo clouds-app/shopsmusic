@@ -1,7 +1,7 @@
 import axios from '@/libs/api.request'
 import Qs from 'qs'//这个库是 axios 里面包含的，不需要再下载了
 
-/** {id,count,description,link,name,slug,taxonomy,meta } 
+/** 
 * @description  获取Tags列表/get Tags list
 * @params {context,page,per_page,search,exclude,include,offset,order,orderby,hide_empty, post,slug} 
 * @detail https://developer.wordpress.org/rest-api/reference/tags/#list-tags

@@ -1,8 +1,8 @@
 import axios from '@/libs/api.request'
 import Qs from 'qs'//这个库是 axios 里面包含的，不需要再下载了
 
-/** {id,count,description,link,name,slug,taxonomy,meta } 
-* @description  获取Tags列表/get Tags list
+/** 
+* @description  获取 settings 列表/get settings list
 * @params {} 
 * @detail https://developer.wordpress.org/rest-api/reference/settings/#list-settings
 * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/settings
@@ -26,12 +26,12 @@ export const getSettings = () => {
   
   
   /**
-  * @description 添加/修改Tags/创建/更新Tags /create or update a Tags by id
+  * @description 添加/修改 Settings/创建/更新Settings/create or update a Settings by id
   * @params {title,description,timezone,date_format,time_format,start_of_week,language,use_smilies,default_category,default_post_format,posts_per_page,default_ping_status} 
   * @detail https://developer.wordpress.org/rest-api/reference/settings/#list-settings
   * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/settings/<id>
   */
-  export const createOrEditTags = ({title,description,timezone,date_format,time_format,start_of_week,language,use_smilies,default_category,default_post_format,posts_per_page,default_ping_status,id}) => {
+  export const createOrEditSettings = ({title,description,timezone,date_format,time_format,start_of_week,language,use_smilies,default_category,default_post_format,posts_per_page,default_ping_status,id}) => {
     //参数
     //debugger
     const data = {

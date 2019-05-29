@@ -14,7 +14,7 @@ export const getTaxonomies = ({context,type}) => {
        // context,type
     }
     return axios.request({
-      url: '/api/wp-json/wp/v2/tags',
+      url: '/api/wp-json/wp/v2/taxonomies',
       data,
       method: 'get',
       transformRequest: [function (data) {
