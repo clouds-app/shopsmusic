@@ -116,6 +116,50 @@ export default [
         component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/user/addOrEditUser.vue')
       },
       {
+        path:'comments',//嵌套路径path不需要’/‘
+        name:'comments',
+        meta: {
+          hideInMenu: false,
+          title: '评论列表',
+          notCache: false,
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/comments/comments.vue')
+      },
+      {
+        path:'media',//嵌套路径path不需要’/‘
+        name:'media',
+        meta: {
+          hideInMenu: false,
+          title: '媒体库',
+          notCache: false,
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/media/media.vue')
+      },
+      {
+        path:'settings',//嵌套路径path不需要’/‘
+        name:'settings',
+        meta: {
+          hideInMenu: false,
+          title: '设置常规',
+          notCache: false,
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/settings/settings.vue')
+      },
+      {
+        path:'tags',//嵌套路径path不需要’/‘
+        name:'tags',
+        meta: {
+          hideInMenu: false,
+          title: '标签列表',
+          notCache: false,
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/tags/tags.vue')
+      },
+      {
          path:'*', //others route redirect to home/base
          redirect:'/'
       }

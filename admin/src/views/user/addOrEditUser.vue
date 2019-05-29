@@ -2,7 +2,7 @@
   <div class="container">
     <Spin size="large" fix v-if="spinShow"></Spin>
     <Form ref="userForm" :model="userForm" :rules="userRules" :lable-width="80">
-      <FormItem prop="userName">
+      <FormItem prop="username">
           <Input :disabled="disabledUserName" v-model="userForm.username" placeholder="请输入用户名">
             <span slot="prepend">
                 <Icon :size="16" type="ios-person"></Icon>

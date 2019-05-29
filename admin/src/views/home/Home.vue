@@ -5,7 +5,8 @@
                   <Menu active-name="1-1" theme="dark" width="auto" :open-names="['1']">
                         <Submenu name="1">
                             <template slot="title">
-                                  <Icon type="ios-navigate"></Icon>
+                                  <!-- <Icon type="ios-navigate"></Icon> -->
+                                  <Icon type="md-speedometer" />
                                 <span v-show="!isCollapsed">仪表盘</span>
                             </template>
                              <MenuItem to="/home/" name="1-1" @click.native="addMenuToTag('home','首页')">首页</MenuItem>
@@ -15,7 +16,7 @@
                         </Submenu>
                         <Submenu name="2">
                             <template slot="title">
-                                <Icon type="ios-keypad"></Icon>
+                               <Icon type="ios-browsers" />
                                <span v-show="!isCollapsed">文章</span>
                             </template>
                             <MenuItem to="/home/postsList" @click.native="addMenuToTag('postsList','文章列表')" name="2-1">文章列表</MenuItem>
@@ -23,21 +24,43 @@
                             <MenuItem to="/home/category"  @click.native="addMenuToTag('category','分类目录')" name="2-3">分类目录</MenuItem>
                             <MenuItem to="/home/meta"  @click.native="addMenuToTag('meta','标签列表')" name="2-4">标签列表</MenuItem>
                         </Submenu>
+                       <Submenu name="5">
+                            <template slot="title">
+                               <Icon type="md-cloud-upload" />
+                                  <span v-show="!isCollapsed">媒体</span>
+                            </template>
+                            <MenuItem to="/home/media" name="5-1">媒体列表</MenuItem>
+                            <MenuItem to="/home/media" name="4-2">添加媒体</MenuItem>
+                        </Submenu>
                         <Submenu name="3">
                             <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
+                               <Icon type="md-document" />
                                   <span v-show="!isCollapsed">页面</span>
                             </template>
                             <MenuItem to="/home/pageList" name="3-1">页面列表</MenuItem>
                             <MenuItem to="/home/pageList" name="3-2">添加页面</MenuItem>
                         </Submenu>
+                          <Submenu name="6">
+                            <template slot="title">
+                              <Icon type="md-chatboxes" />
+                                  <span v-show="!isCollapsed">评论</span>
+                            </template>
+                            <MenuItem to="/home/comments" name="6-1">评论列表</MenuItem>
+                        </Submenu>
                          <Submenu name="4">
                             <template slot="title">
-                                <Icon type="md-people"></Icon>
+                             <Icon type="md-person-add" />
                                   <span v-show="!isCollapsed">用户</span>
                             </template>
-                            <MenuItem to="/home/user" name="3-1">用户列表</MenuItem>
-                            <MenuItem to="/home/userEdit" name="3-2">添加用户</MenuItem>
+                            <MenuItem to="/home/user" name="4-1">用户列表</MenuItem>
+                            <MenuItem to="/home/userEdit" name="4-2">添加用户</MenuItem>
+                        </Submenu>
+                         <Submenu name="7">
+                            <template slot="title">
+                                 <Icon type="md-options" />
+                                  <span v-show="!isCollapsed">设置</span>
+                            </template>
+                            <MenuItem to="/home/settings" name="7-1">常规</MenuItem>
                         </Submenu>
                     </Menu>
             </Sider>
