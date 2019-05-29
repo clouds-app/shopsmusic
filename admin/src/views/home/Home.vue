@@ -30,7 +30,7 @@
                                   <span v-show="!isCollapsed">媒体</span>
                             </template>
                             <MenuItem to="/home/media" name="5-1">媒体列表</MenuItem>
-                            <MenuItem to="/home/media" name="4-2">添加媒体</MenuItem>
+                            <MenuItem to="/home/addMedia" name="4-2">添加媒体</MenuItem>
                         </Submenu>
                         <Submenu name="3">
                             <template slot="title">
@@ -100,7 +100,7 @@
                         <BreadcrumbItem>Layout</BreadcrumbItem> -->
                     </Breadcrumb>
                     <Card>
-                        <div style="height: 600px">
+                        <div style="height: Auto">
                          <!-- 需要被缓存的路由入口 -->
                         <keep-alive>  
                             <router-view v-if="$route.meta.keepAlive"></router-view>

@@ -54,14 +54,15 @@ export const getMedia = ({context,page,per_page,search,after,author,author_exclu
   * @description 添加/修改Media/创建/更新Media /create or update a Media by id
   * @params {date,date_gmt,slug,status,title,author,comment_status,ping_status,meta,template,alt_text,caption,description,post} 
   * @update POST /wp/v2/users/<id>
-  * @detail https://developer.wordpress.org/rest-api/reference/users/#create-a-user
-  * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/users/<id>
+  * @detail https://developer.wordpress.org/rest-api/reference/media/
+  * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/media/<id>
+  * // 上传成功后，我们可以获取附件 ID，作为文章的附件（featured_media）和文章一起提交，来实现设置文章特色图像的目的
   */
-  export const createOrEditMedia = ({date,date_gmt,slug,status,title,author,comment_status,ping_status,meta,template,alt_text,caption,description,post,id}) => {
+  export const createOrEditMedia = ({imageData,date,date_gmt,slug,status,title,author,comment_status,ping_status,meta,template,alt_text,caption,description,post,id}) => {
     //参数
     //debugger
     const data = {
-       // date,date_gmt,slug,status,title,author,comment_status,ping_status,meta,template,alt_text,caption,description,post
+       // imageData,date,date_gmt,slug,status,title,author,comment_status,ping_status,meta,template,alt_text,caption,description,post
     }
     //debugger
     //更新操作
@@ -73,6 +74,10 @@ export const getMedia = ({context,page,per_page,search,after,author,author_exclu
       url: `/api/wp-json/wp/v2/media${updateId}`,
       data,
       method: 'post',
+      cache: false,
+      contentType: false,
+      processData: false,
+      headers: { 'Content-Disposition': `attachment;filename=${title}.jpg` },
       transformRequest: [function (data) {
         // 对 data 进行任意转换处理
         return Qs.stringify(data)

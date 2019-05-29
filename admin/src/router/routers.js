@@ -127,7 +127,7 @@ export default [
         component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/comments/comments.vue')
       },
       {
-        path:'media',//嵌套路径path不需要’/‘
+        path:'media',//嵌套路径path不需要’/
         name:'media',
         meta: {
           hideInMenu: false,
@@ -136,6 +136,17 @@ export default [
           icon: 'md-home'
         },
         component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/media/media.vue')
+      },
+      {
+        path:'addMedia',//嵌套路径path不需要’/
+        name:'addMedia',
+        meta: {
+          hideInMenu: false,
+          title: '添加媒体',
+          notCache: false,
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/media/addMedia.vue')
       },
       {
         path:'settings',//嵌套路径path不需要’/‘
