@@ -8,6 +8,9 @@
       <template slot-scope="{ row }" slot="email">
         <strong>{{ getUserEmail(row)}}</strong>
       </template>
+      <template slot-scope="{ row }" slot="wechat">
+        <strong>{{ getUserWechat(row)}}</strong>
+      </template>
       <template slot-scope="{ row }" slot="avatar_urls">
         <img style="-webkit-user-select: none;" :src="row.avatar_urls[24]">
       </template>
@@ -60,6 +63,11 @@ export default {
           minWidth: 100,
           slot: "email"
         },
+          {
+          title: "微信",
+          minWidth: 100,
+          slot: "wechat"
+        },
         {
           title: "伪URL",
           minWidth: 100,
@@ -95,6 +103,13 @@ export default {
         if(user && user.acf && user.acf.email!=null)
         {
             return user.acf.email
+        }
+    },
+    getUserWechat(user){
+        //debugger
+        if(user && user.acf && user.acf._wechat!=null)
+        {
+            return user.acf._wechat
         }
     },
     removeCash() {

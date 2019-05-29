@@ -216,7 +216,7 @@ export default {
     * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/users/<id>
     */
     createOrUpdateUser({commit,dispatch,state, getters,rootState, rootGetters},params){
-      debugger
+      //debugger
       return new Promise((resolve,reject)=>{
         try {
           userServices.createOrEditUser(params).then(res=>{

@@ -64,7 +64,7 @@ export default [
         meta: {
           hideInMenu: false,
           title: '文章编辑',
-          keepAlive: true, 
+          keepAlive: false, 
           notCache: false,
           icon: 'md-home'
         },
@@ -98,6 +98,7 @@ export default [
         meta: {
           hideInMenu: false,
           title: '用户列表',
+          keepAlive: false, 
           notCache: false,
           icon: 'md-home'
         },

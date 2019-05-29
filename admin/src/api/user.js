@@ -151,11 +151,12 @@ return axios.request({
 * @detail https://developer.wordpress.org/rest-api/reference/users/#create-a-user
 * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/users/<id>
 */
-export const createOrEditUser = ({username,name,first_name,last_name,email,url,description,locale,nickname,slug,roles,password,meta,id}) => {
+export const createOrEditUser = ({username,name,first_name,last_name,email,url,description,locale,nickname,slug,roles,password,meta,id,acf_email}) => {
   //参数
-  debugger
+  //debugger
   const data = {
-    username,email,password,description
+    username,email,password,description,
+    '_wechat':'dk@qq.com'
   }
   //debugger
   //更新操作
