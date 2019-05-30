@@ -156,7 +156,10 @@ export const createOrEditUser = ({username,name,first_name,last_name,email,url,d
   //debugger
   const data = {
     username,email,password,description,
-    '_wechat':'dk@qq.com'
+    'acf-email':'dk@qq.com'
+    // acf:{
+    //   email:'dk@qq.com'
+    // }
   }
   //debugger
   //更新操作
@@ -168,9 +171,34 @@ export const createOrEditUser = ({username,name,first_name,last_name,email,url,d
     url: `/api/wp-json/wp/v2/users${updateId}`,
     data,
     method: 'post',
-    transformRequest: [function (data) {
-      // 对 data 进行任意转换处理
-      return Qs.stringify(data)
-    }],
+    // transformRequest: [function (data) {
+    //   // 对 data 进行任意转换处理
+    //   return Qs.stringify(data)
+    // }],
+  })
+}
+
+
+export const createOrEditUserACF = ({email,_wechat,id}) => {
+  //参数
+  debugger
+  const data = {
+    field_5cecf1c228844:email
+  }
+  //debugger
+  //更新操作
+  let updateId= ''
+  if(id!=0 && id !=null){
+    updateId =`/${id}`
+  }
+  return axios.request({
+    url: `/api/wp-json/acf/v3/users${updateId}/email`,
+    data,
+    //dataType: 'json',
+    method: 'post',
+    // transformRequest: [function (data) {
+    //   // 对 data 进行任意转换处理
+    //   return Qs.stringify(data)
+    // }],
   })
 }

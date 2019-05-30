@@ -24,7 +24,8 @@
         :before-upload="handleBeforeUpload"
         multiple
         type="drag"
-        action="//jsonplaceholder.typicode.com/posts/"
+        :action="uploadUrl"
+        :data="uploadData"
         style="display: inline-block;width:58px;">
         <div style="width: 58px;height:58px;line-height: 58px;">
             <Icon type="ios-camera" size="20"></Icon>
@@ -37,9 +38,17 @@
    
 </template>
 <script>
+  //import axios from '@/libs/api.request'
+  import axios from 'axios'
+  import { setToken, getToken,setCookie,getCookie,AuthorizationCheck} from '@/libs/util'
+  import Qs from 'qs'//这个库是 axios 里面包含的，不需要再下载了
+  import config from '@/config'
+const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
     export default {
         data () {
             return {
+                uploadUrl: '',
+                uploadData: {},
                 defaultList: [
                     // {
                     //     'name': 'a42bdcc1178e62b4694c830f028db5c0',
@@ -81,14 +90,80 @@
                     desc: 'File  ' + file.name + ' is too large, no more than 2M.'
                 });
             },
-            handleBeforeUpload () {
-                const check = this.uploadList.length < 5;
-                if (!check) {
-                    this.$Notice.warning({
-                        title: 'Up to five pictures can be uploaded.'
+            handleBeforeUpload (file) { /*上传前确定上传地址*/
+                debugger
+                 const check = this.uploadList.length < 5;
+               
+                // if (!check) {
+                //     this.$Notice.warning({
+                //         title: 'Up to five pictures can be uploaded.'
+                //     });
+                // }
+                // return check;
+                //this.uploadUrl = 'api?research_id=' + researchId + '&filetype=' + file.name.split('.')[1];
+                this.uploadUrl =  `${baseUrl}api/wp-json/wp/v2/media`;
+                this.uploadData = {
+                    //role: patient,
+                   // file: file,
+                    // date,
+                    // date_gmt,
+                    // slug,
+                    // status,
+                     title:file.name,
+                    // author,
+                    // comment_status,
+                    // ping_status,
+                    // meta,
+                    // template,
+                    alt_text:file.name,
+                    // caption,
+                    description:file.name,
+                    // post
+                };
+                let promise = new Promise((resolve) => {
+                    this.$nextTick(function () {
+                        if (!check) {
+                            this.$Notice.warning({
+                                title: 'Up to five pictures can be uploaded.'
+                            });
+                        }else{
+                            // resolve(true);
+                            // return check;
+                            // 获取文件对象
+                            // var fileObject = $('input#file')[0].files[0] 
+                            // 或者使用原生方法获取文件 document.getElementById("photo").files[0];
+                            // var filename = fileObject.name;
+
+                            // 创建一个虚拟的表单，把文件放到这个表单里面
+                            var imageData = new FormData();
+                            imageData.append( "file", file);
+                            let tokenString = AuthorizationCheck()
+                            axios({
+                                method:'post',
+                                url:`${baseUrl}api/wp-json/wp/v2/media`,
+                                data:imageData, //这个是上一步，创建的对象
+                                cache: false,
+                               // contentType: false,
+                                processData: false,
+                                headers: { 
+                                    'Content-Disposition': `attachment;filename=${file.name}`,
+                                    'content-type': 'application/json',
+                                    'Authorization': tokenString 
+                                    },
+                                })
+                                .then(function(response) {
+                                    resolve(true);
+                                   console.log(response);
+                                })
+                                .catch(function (error) {
+                                   console.log(error);
+                               });
+
+                        }
+                       
                     });
-                }
-                return check;
+                });
+                return promise; //通过返回一个promis对象解决
             }
         },
         mounted () {

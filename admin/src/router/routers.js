@@ -71,7 +71,7 @@ export default [
         component:()=>import(/* webpackChunkName: "addOrEditPost" */ '@/views/posts/addOrEditPost.vue')
       },
       {
-        path:'category',//嵌套路径path不需要’/‘
+        path:'category',//嵌套路径path不需要’/‘ 
         name:'category',
         meta: {
           hideInMenu: false,
@@ -80,6 +80,17 @@ export default [
           icon: 'md-home'
         },
         component:()=>import(/* webpackChunkName: "category" */ '@/views/category/category.vue')
+      },
+      {
+        path:'addOrEditCategory',//嵌套路径path不需要’/‘ 
+        name:'addOrEditCategory',
+        meta: {
+          hideInMenu: false,
+          title: '类别列表',
+          notCache: false,
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "addOrEditCategory" */ '@/views/category/addOrEditCategory.vue')
       },
       {
         path:'meta',//嵌套路径path不需要’/‘

@@ -21,8 +21,16 @@
                             </template>
                             <MenuItem to="/home/postsList" @click.native="addMenuToTag('postsList','文章列表')" name="2-1">文章列表</MenuItem>
                             <MenuItem to="/home/postsEdit"  @click.native="addMenuToTag('postsEdit','添加文章')" name="2-2">添加文章</MenuItem>
-                            <MenuItem to="/home/category"  @click.native="addMenuToTag('category','分类目录')" name="2-3">分类目录</MenuItem>
+                            <!-- <MenuItem to="/home/category"  @click.native="addMenuToTag('category','分类目录')" name="2-3">分类目录</MenuItem> -->
                             <MenuItem to="/home/meta"  @click.native="addMenuToTag('meta','标签列表')" name="2-4">标签列表</MenuItem>
+                        </Submenu>
+                       <Submenu name="8">
+                            <template slot="title">
+                             <Icon type="logo-buffer" />
+                                  <span v-show="!isCollapsed">分类</span>
+                            </template>
+                            <MenuItem to="/home/category" name="8-1">分类目录</MenuItem>
+                            <MenuItem to="/home/addOrEditCategory" name="8-2">添加分类</MenuItem>
                         </Submenu>
                        <Submenu name="5">
                             <template slot="title">
@@ -100,7 +108,7 @@
                         <BreadcrumbItem>Layout</BreadcrumbItem> -->
                     </Breadcrumb>
                     <Card>
-                        <div style="height: Auto">
+                        <div style="height: Auto;minHeight:640px;">
                          <!-- 需要被缓存的路由入口 -->
                         <keep-alive>  
                             <router-view v-if="$route.meta.keepAlive"></router-view>

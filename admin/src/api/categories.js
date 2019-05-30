@@ -32,11 +32,12 @@ export const getCategories = ({params}) =>{
  * @Example  http://demo.wp-api.org/wp-json/wp/v2/categories/<id>
  */
 
- export const createOrUpdateCategory = ({name,id = 0,description = name,parent = 0}) =>{
+ export const createOrUpdateCategory = ({name,slug,id = 0,description = name,parent = 0}) =>{
     const data = {
         name,
         description,
         parent,
+        slug
     }
      //更新操作
      let updateId= ''
@@ -61,16 +62,16 @@ export const getCategories = ({params}) =>{
   * @Example  DELETE http://demo.wp-api.org/wp-json/wp/v2/categories/<id>
   */
 
-  export const deleteCategory = ({id,force}) =>{
+  export const deleteCategory = ({id}) =>{
       const data = {
-          force,
+        force:true
       }
      return axios.request({
-         url: `wp/v2/categories/${id}`,
+         url: `/api/wp-json/wp/v2/categories/${id}`,
          data,
          method:'delete',
-         transformRequest:[function (data){
-             return Qs.stringify(data)
-         }]
+        //  transformRequest:[function (data){
+        //      return Qs.stringify(data)
+        //  }]
      })
   }

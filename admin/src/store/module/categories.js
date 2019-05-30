@@ -5,7 +5,7 @@ const serverBusyTips="网络繁忙，请稍后再试！"
 
 export default {
     state:{
-       categoryList:(getSessionstorage('categoryList')|[]),
+       categoryList:getSessionstorage('categoryList')|[],
     },
     getters:{
         //categoryList_state:state=>state.categoryList
@@ -20,9 +20,9 @@ export default {
         //   },
      
     },
-    mutatios:{
+    mutations:{
         setCategoryList(state,data){
-            state.categoryList =data
+            state.categoryList = data
             setSessionstorage('categoryList',JSON.stringify(data)) 
         }
     },
@@ -33,15 +33,16 @@ export default {
         * @params {context,page,per_page,search,exclude,include,order,orderby,hide_empty,parent,post,slug}
         * @detail https://developer.wordpress.org/rest-api/reference/categories/#list-categories
         */
-        getCategoryList({dispatch, commit, getters, rootGetters},params){
+        getCategoryList({commit},params){
             return new Promise((resolve,reject)=>{
                 try {
                     categoryServices.getCategories(params).then(res=>{
                         let data =res.data;
-                         commit('setCategoryList',data)
+                        commit('setCategoryList',data)
                         resolve(data)
                     }).catch(err=>{
-                        reject(err)
+                        let errData=err.response.data
+                        reject(errData.message)
                     })
                 } catch (err) {
                     console.error(err)
@@ -64,7 +65,8 @@ export default {
                         let data =res.data
                         resolve(data)
                     }).catch(err=>{
-                        reject(err)
+                        let errData=err.response.data
+                        reject(errData.message)
                     })
                 } catch (err) {
                     console.error(err)
@@ -87,7 +89,8 @@ export default {
                         let data =res.data
                         resolve(data)
                     }).catch(err=>{
-                        reject(err)
+                        let errData=err.response.data
+                        reject(errData.message)
                     })
                 } catch (err) {
                     console.error(err)

@@ -232,7 +232,24 @@ export default {
         }
       })
     },
-        
+    //更新其它用户自定义字段
+    createOrEditUserACF({commit},params){
+      //debugger
+      return new Promise((resolve,reject)=>{
+        try {
+          userServices.createOrEditUserACF(params).then(res=>{
+            let data = res.data
+             resolve(data)
+          }).catch(err=>{
+            let errData=err.response.data
+            reject(errData.message)
+          })
+        } catch (err) {
+          console.error(err)
+          reject(serverBusyTips)
+        }
+      })
+    },   
         
     }
   }

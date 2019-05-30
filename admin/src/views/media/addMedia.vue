@@ -11,7 +11,7 @@
                 <Icon type="ios-film-outline"></Icon>
                媒体描述
             </p>
-              <Form style="width:350px" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+       <Form style="width:350px" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
       
         <FormItem label="uploadImg">
              <UploadFile></UploadFile>
@@ -65,7 +65,12 @@
             <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
             <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
         </FormItem>
-    </Form>
+      </Form>
+        <span>上传新媒体文件2</span>
+        <form id="imageUpload" enctype="multipart/form-data"> 
+        <input type="file" id="file" />
+        <input type="button" @click="handleUpload" value="save file" />
+     </form>
     </Card>
        
        </Content>
@@ -99,6 +104,11 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import { setToken, getToken,setCookie,getCookie,AuthorizationCheck} from '@/libs/util'
+  import Qs from 'qs'//这个库是 axios 里面包含的，不需要再下载了
+  import config from '@/config'
+const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
     import UploadFile  from '_c/upload-files'
     export default {
         name:'addMedia',
@@ -160,6 +170,50 @@
             },
             handleReset (name) {
                 this.$refs[name].resetFields();
+            },
+            handleUpload(){
+                alert(1)
+                         // var fileObject = $('input#file')[0].files[0] 
+                            // 或者使用原生方法获取文件 
+                            debugger
+                           let fileObject = document.getElementById("file").files[0];
+                           let filename = fileObject.name;
+
+                            // 创建一个虚拟的表单，把文件放到这个表单里面
+                            var imageData = new FormData();
+                            imageData.append( "file", fileObject);
+                            let data ={
+                                file:fileObject,
+                                slug:filename,
+                                title:filename,
+                                alt_text:filename,
+                                description:filename,
+                            }
+                            let tokenString = AuthorizationCheck()
+                            axios({
+                                method:'post',
+                                url:`${baseUrl}api/wp-json/wp/v2/media`,
+                                data, //这个是上一步，创建的对象
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                headers: { 
+                                    'Content-Disposition': `attachment;filename=${filename}`,
+                                    'content-type': 'application/json',
+                                    'Authorization': tokenString 
+                                    },
+                                // transformRequest: [function (data) {
+                                //     // 对 data 进行任意转换处理
+                                //     return Qs.stringify(data)
+                                // }],
+                                })
+                                .then(function(response) {
+                                    resolve(true);
+                                   console.log(response);
+                                })
+                                .catch(function (error) {
+                                   console.log(error);
+                               });
             }
         }
         
