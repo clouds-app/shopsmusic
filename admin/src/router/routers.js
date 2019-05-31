@@ -35,7 +35,7 @@ export default [
         component:()=>import(/* webpackChunkName: "tableExample" */ '_c/TableSelectByKey.vue')
       },
       {
-      path:'pageList', //嵌套路径path不需要’/‘
+      path:'pageList', //嵌套路径path不需要’/
       name:'pageList',
       meta: {
         hideInMenu: false,
@@ -46,6 +46,18 @@ export default [
       },
       component:()=>import(/* webpackChunkName: "pageList" */ '@/views/page/pageList.vue')
       },
+      {
+        path:'addOrEditPage', //嵌套路径path不需要’/
+        name:'addOrEditPage',
+        meta: {
+          hideInMenu: false,
+          title: '添加页面',
+          notCache: false,
+          keepAlive: true, 
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "pageList" */ '@/views/page/addOrEditPage.vue')
+        },
       {
         path:'postsList',//嵌套路径path不需要’/‘
         name:'postsList',
@@ -102,6 +114,17 @@ export default [
           icon: 'md-home'
         },
         component:()=>import(/* webpackChunkName: "meta" */ '@/views/meta/meta.vue')
+      },
+      {
+        path:'addOrEditMeta',//嵌套路径path不需要’/‘
+        name:'addOrEditMeta',
+        meta: {
+          hideInMenu: false,
+          title: '添加标签',
+          notCache: false,
+          icon: 'md-home'
+        },
+        component:()=>import(/* webpackChunkName: "meta" */ '@/views/meta/addOrEditMeta.vue')
       },
       {
         path:'user',//嵌套路径path不需要’/‘

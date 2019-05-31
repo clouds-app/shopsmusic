@@ -53,13 +53,17 @@ export const deletePost = ({id}) => {
 * @update POST /wp/v2/posts/<id>
 * @detail https://developer.wordpress.org/rest-api/reference/posts/#list-posts
 */
-  export const createOrEditPosts = ({title,content,status,id}) => {
+  export const createOrEditPosts= ({title,content,status,id}) => {
     //参数
     //debugger
     const data = {
       title,
       content,
       status,
+      telephoneno:'13670287036'
+      // acf:{
+      //   telephoneno:'13670287036'
+      // }
     }
     //debugger
     //更新操作
@@ -75,5 +79,30 @@ export const deletePost = ({id}) => {
         // 对 data 进行任意转换处理
         return Qs.stringify(data)
       }],
+    })
+  }
+
+
+  export const createOrEditPostsACF = ({telephoneno,id}) => {
+    //参数
+    debugger
+    const data = {
+      telephoneno:'13670287036'
+    }
+    //debugger
+    //更新操作
+    let updateId= ''
+    if(id!=0 && id !=null){
+      updateId =`/${id}`
+    }
+    return axios.request({
+      url: `/api/wp-json/acf/v3/posts${updateId}/?field_5cf0724f0f92d`,
+      //data,
+      //dataType: 'json',
+      method: 'post',
+      // transformRequest: [function (data) {
+      //   // 对 data 进行任意转换处理
+      //   return Qs.stringify(data)
+      // }],
     })
   }

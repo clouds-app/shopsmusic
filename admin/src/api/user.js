@@ -183,7 +183,8 @@ export const createOrEditUserACF = ({email,_wechat,id}) => {
   //参数
   debugger
   const data = {
-    field_5cecf1c228844:email
+    email:'hdeqi@qq.com',
+    _wechat:'13670287036'
   }
   //debugger
   //更新操作

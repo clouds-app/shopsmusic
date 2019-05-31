@@ -31,11 +31,11 @@ export const getSettings = () => {
   * @detail https://developer.wordpress.org/rest-api/reference/settings/#list-settings
   * @example $ curl http://demo.wp-api.org/wp-json/wp/v2/settings/<id>
   */
-  export const createOrEditSettings = ({title,description,timezone,date_format,time_format,start_of_week,language,use_smilies,default_category,default_post_format,posts_per_page,default_ping_status,id}) => {
+  export const createOrEditSettings = ({title,description,timezone,date_format,time_format,start_of_week,language,use_smilies,default_category,default_post_format,posts_per_page,default_ping_status,default_comment_status,id}) => {
     //参数
     //debugger
     const data = {
-       // title,description,timezone,date_format,time_format,start_of_week,language,use_smilies,default_category,default_post_format,posts_per_page,default_ping_status
+        title,description,timezone,date_format,time_format,start_of_week,language,default_post_format,posts_per_page,default_ping_status,default_comment_status
     }
 
     return axios.request({

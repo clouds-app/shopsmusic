@@ -29,7 +29,7 @@ export default {
                     //debugger
                     let data =res.data
                     resolve(data)
-                    commit('setPostsList',data)
+                   // commit('setPostsList',data)
                 }).catch(err=>{
                     let errData=err.response.data
                     reject(errData.message)

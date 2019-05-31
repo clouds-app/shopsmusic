@@ -8,6 +8,9 @@
       <template slot-scope="{ row }" slot="status">
         <span>{{ formatStatus(row.status) }}</span>
       </template>
+       <template slot-scope="{ row }" slot="telephoneno">
+        <strong>{{ getTelephone(row)}}</strong>
+      </template>
       <template slot-scope="{ row, index }" slot="action">
         <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">查看</Button>
          <Button type="success" size="small" style="margin-right: 5px" @click="edit(row.id)">修改</Button>
@@ -44,6 +47,11 @@ export default {
           key: "title",
           minWidth: 180,
           slot:"title",
+        },
+        {
+          title: "手机",
+          minWidth: 180,
+          slot:"telephoneno",
         },
         {
           title: "状态",
@@ -96,6 +104,13 @@ export default {
     removeCash(){
       this.$route.meta.keepAlive = false;
     },
+     getTelephone(row){
+        //debugger
+        if(row && row.acf && row.acf.telephoneno!=null)
+        {
+            return row.acf.telephoneno
+        }
+    },
     //初始化页面列表数据
     initData() {
       this.spinShow = true;
@@ -112,7 +127,7 @@ export default {
             type: type.tipMessage_success,
             msg: "获取文章列表成功！"
           };
-         // console.log('this.allPageList:'+JSON.stringify(res))
+          console.log('this.获取文章列表成功！:'+JSON.stringify(res))
            this.formatData(res)
           this.spinShow = false;
           _self.showMsg(config);

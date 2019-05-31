@@ -22,7 +22,7 @@
                             <MenuItem to="/home/postsList" @click.native="addMenuToTag('postsList','文章列表')" name="2-1">文章列表</MenuItem>
                             <MenuItem to="/home/postsEdit"  @click.native="addMenuToTag('postsEdit','添加文章')" name="2-2">添加文章</MenuItem>
                             <!-- <MenuItem to="/home/category"  @click.native="addMenuToTag('category','分类目录')" name="2-3">分类目录</MenuItem> -->
-                            <MenuItem to="/home/meta"  @click.native="addMenuToTag('meta','标签列表')" name="2-4">标签列表</MenuItem>
+                            <!-- <MenuItem to="/home/meta"  @click.native="addMenuToTag('meta','标签列表')" name="2-4">标签列表</MenuItem> -->
                         </Submenu>
                        <Submenu name="8">
                             <template slot="title">
@@ -31,6 +31,14 @@
                             </template>
                             <MenuItem to="/home/category" name="8-1">分类目录</MenuItem>
                             <MenuItem to="/home/addOrEditCategory" name="8-2">添加分类</MenuItem>
+                        </Submenu>
+                            <Submenu name="9">
+                            <template slot="title">
+                             <Icon type="ios-bookmark" />
+                                  <span v-show="!isCollapsed">标签</span>
+                            </template>
+                            <MenuItem to="/home/meta" name="9-1">标签列表</MenuItem>
+                            <MenuItem to="/home/addOrEditMeta" name="9-2">添加标签</MenuItem>
                         </Submenu>
                        <Submenu name="5">
                             <template slot="title">
@@ -46,7 +54,7 @@
                                   <span v-show="!isCollapsed">页面</span>
                             </template>
                             <MenuItem to="/home/pageList" name="3-1">页面列表</MenuItem>
-                            <MenuItem to="/home/pageList" name="3-2">添加页面</MenuItem>
+                            <MenuItem to="/home/addOrEditPage" name="3-2">添加页面</MenuItem>
                         </Submenu>
                           <Submenu name="6">
                             <template slot="title">
