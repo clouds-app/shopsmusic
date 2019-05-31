@@ -181,37 +181,22 @@ const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : co
 
                             // 创建一个虚拟的表单，把文件放到这个表单里面
                             var imageData = new FormData();
-                           // imageData.append( "file", fileObject);
-                             imageData.append('file', fileObject, filename) // 通过append向form对象添加数据
-                            let data ={
-                                file:imageData,
-                                // slug:filename,
-                                // title:filename,
-                                // alt_text:filename,
-                                // description:filename,
-                            }
+                            imageData.append( "file", fileObject);
+                            // imageData.append('file', fileObject, filename) // 通过append向form对象添加数据
                             let tokenString = AuthorizationCheck()
                             axios({
                                 method:'post',
                                 url:`${baseUrl}api/wp-json/wp/v2/media`,
                                 data:imageData, //这个是上一步，创建的对象
-                                cache: false,
-                               // contentType: false,
-                                processData: false,
+                                // cache: false,
+                                // processData: false,
                                 headers: { 
                                     'Content-Type': 'multipart/form-data',
                                     'Authorization': tokenString 
                                     },
-                                // transformRequest: [function (data) {
-                                //     // 对 data 进行任意转换处理
-                                //     return Qs.stringify(data)
-                                // }],
-                                },
-                                {
-                                    // 单独配置
-                                    withCredentials: true
                                 })
                                 .then(function(response) {
+                                    debugger
                                     resolve(true);
                                    console.log(response);
                                 })
