@@ -156,7 +156,7 @@ export const createOrEditUser = ({username,name,first_name,last_name,email,url,d
   //debugger
   const data = {
     username,email,password,description,
-    'acf-email':'dk@qq.com'
+    //fields:{email:'hdeqi@qq.com'}
     // acf:{
     //   email:'dk@qq.com'
     // }
@@ -183,8 +183,7 @@ export const createOrEditUserACF = ({email,_wechat,id}) => {
   //参数
   debugger
   const data = {
-    email:'hdeqi@qq.com',
-    _wechat:'13670287036'
+    "acf":{_wechat:'hdeqi@qq.com'}
   }
   //debugger
   //更新操作
@@ -193,7 +192,7 @@ export const createOrEditUserACF = ({email,_wechat,id}) => {
     updateId =`/${id}`
   }
   return axios.request({
-    url: `/api/wp-json/acf/v3/users${updateId}/email`,
+    url: `/api/wp-json/acf/v3/users${updateId}`,
     data,
     //dataType: 'json',
     method: 'post',
